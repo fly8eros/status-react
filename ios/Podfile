@@ -19,17 +19,19 @@ abstract_target 'Status' do
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
+  pod "react-native-status", path: "../modules/react-native-status"
+
   target 'StatusIm' do
     target 'StatusImTests' do
       inherit! :complete
       # Pods for testing
     end
   end
-  
+
   target 'StatusImPR' do
   end
-  
-  use_flipper!
+
+  use_flipper!({ 'Flipper' => '0.74.0' })
   post_install do |installer|
     flipper_post_install(installer)
   end
@@ -37,3 +39,4 @@ abstract_target 'Status' do
 
   use_native_modules!
 end
+
