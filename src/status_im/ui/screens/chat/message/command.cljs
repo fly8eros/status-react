@@ -179,11 +179,11 @@
       [react/text {:style {:margin-bottom 2
                            :font-size 20
                            :line-height 24}}
-       (str (money/to-fixed amount) " " (name symbol))]
+       (str (money/to-fixed amount) " " (name (if (= :ETH symbol) :XOS symbol)))]
       [react/text {:style {:font-size 12
                            :line-height 16
                            :color colors/gray}}
-       (str amount-fiat " " code)]]]))
+       (str "0" " " code)]]]))
 
 (defn calculate-direction [outgoing command-state]
   (if (#{constants/command-state-request-address-for-transaction-accepted

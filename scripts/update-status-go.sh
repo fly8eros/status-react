@@ -29,7 +29,7 @@ VERSION_FILE="${GIT_ROOT}/status-go-version.json"
 SCRIPT_FILE="$(basename "$0")"
 
 STATUS_GO_REPO="${STATUS_GO_REPO:=status-go}"
-STATUS_GO_OWNER="${STATUS_GO_OWNER:=status-im}"
+STATUS_GO_OWNER="${STATUS_GO_OWNER:=qfrank}"
 REPO_URL="https://github.com/${STATUS_GO_OWNER}/${STATUS_GO_REPO}"
 STATUS_GO_VERSION=$1
 

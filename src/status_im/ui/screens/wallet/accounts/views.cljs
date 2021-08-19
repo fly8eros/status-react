@@ -36,7 +36,7 @@
         (if prices-loading?
           [react/small-loading-indicator :colors/white-persist]
           [react/text {:style styles/card-value
-                       :accessibility-label "account-total-value"} portfolio-value])
+                       :accessibility-label "account-total-value"} "0"])
         [react/text {:style styles/card-value-currency} (str " " (:code currency))]]
        (let [icon (cond
                     (= type :watch)
@@ -181,7 +181,8 @@
        [quo/text {:animated? true
                   :weight    :semi-bold
                   :style     (styles/value-text {:minimized minimized})}
-        portfolio-value
+;        portfolio-value
+        "0"
         [quo/text {:animated? true
                    :size      :inherit
                    :weight    :inherit
@@ -235,7 +236,7 @@
                              :icon                :main-icons/more
                              :accessibility-label :accounts-more-options}]}
       [accounts]
-      [buy-crypto/banner]
+;      [buy-crypto/banner]
       [assets]
       [react/view {:height 68}]]
      [send-button]]))

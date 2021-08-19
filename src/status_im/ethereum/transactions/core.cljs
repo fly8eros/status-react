@@ -254,9 +254,9 @@
                          [address]
                          (zero? max-known-block)))
 
-                  (and (zero? max-known-block)
-                       (empty? transfers))
-                  (conj (wallet/set-zero-balances {:address address}))
+;                  (and (zero? max-known-block)
+;                       (empty? transfers))
+;                  (conj (wallet/set-zero-balances {:address address}))
 
                   (< (count transfers) limit)
                   (conj (tx-history-end-reached checksum)))]

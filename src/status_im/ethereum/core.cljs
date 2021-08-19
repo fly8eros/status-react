@@ -1,5 +1,7 @@
 (ns status-im.ethereum.core
   (:require [clojure.string :as string]
+            [status-im.ethereum.tokens :as tokens]
+            [status-im.utils.money :as money]
             ["web3-utils" :as utils]))
 
 (defn sha3 [s]
@@ -19,7 +21,7 @@
 ;; IDs standardized in https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md#list-of-chain-ids
 
 (def chains
-  {:mainnet {:id 1 :name "Mainnet"}
+  {:mainnet {:id 1110 :name "Mainnet"}
    :testnet {:id 3 :name "Ropsten"}
    :rinkeby {:id 4 :name "Rinkeby"}
    :xdai    {:id 100 :name "xDai"}
@@ -36,11 +38,6 @@
 
 (defn chain-keyword->chain-id [k]
   (get-in chains [k :id]))
-
-(defn chain-keyword->snt-symbol [k]
-  (case k
-    :mainnet :SNT
-    :STT))
 
 (defn testnet? [id]
   (contains? #{(chain-keyword->chain-id :testnet)
@@ -123,7 +120,17 @@
   (network->chain-id (get networks current-network)))
 
 (defn snt-symbol [db]
-  (chain-keyword->snt-symbol (chain-keyword db)))
+  (case (chain-keyword db)
+    :mainnet :EROS
+    :STT))
+
+(def default-transaction-gas (money/bignumber 21000))
+
+(defn estimate-gas [symbol]
+  (if (tokens/ethereum? symbol)
+    default-transaction-gas
+    ;; TODO(jeluard) Rely on estimateGas call
+    (.times ^js default-transaction-gas 5)))
 
 (defn address= [address1 address2]
   (and address1 address2

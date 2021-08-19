@@ -50,14 +50,14 @@
      [react/view {:flex 1}
       ;; Show manage storage link when on login screen, only on android devices
       ;; and the selected account is not paired with keycard
-      (when (and (= view-id :login)
-                 (not acc-to-login-keycard-pairing))
-        [quo/list-item
-         {:theme               :accent
-          :title               (i18n/label :t/manage-keys-and-storage)
-          :accessibility-label :manage-keys-and-storage-button
-          :icon                :main-icons/key
-          :on-press            #(hide-sheet-and-dispatch [::multiaccounts.key-storage/key-and-storage-management-pressed])}])
+;      (when (and (= view-id :login)
+;                 (not acc-to-login-keycard-pairing))
+;        [quo/list-item
+;         {:theme               :accent
+;          :title               (i18n/label :t/manage-keys-and-storage)
+;          :accessibility-label :manage-keys-and-storage-button
+;          :icon                :main-icons/key
+;          :on-press            #(hide-sheet-and-dispatch [::multiaccounts.key-storage/key-and-storage-management-pressed])}])
 
       [quo/list-item
        {:theme               :accent
@@ -65,31 +65,17 @@
         :accessibility-label :enter-seed-phrase-button
         :icon                :main-icons/text
         :on-press            #(hide-sheet-and-dispatch [::multiaccounts.recover/enter-phrase-pressed])}]
-      [quo/list-item
-       {:theme               :accent
-        :title               (i18n/label :t/recover-with-keycard)
-        :accessibility-label :recover-with-keycard-button
-        :icon                [react/view {:border-width     1
-                                          :border-radius    20
-                                          :border-color     colors/blue-light
-                                          :background-color colors/blue-light
-                                          :justify-content  :center
-                                          :align-items      :center
-                                          :width            40
-                                          :height           40}
-                              [react/image {:source (resources/get-image :keycard-logo-blue)
-                                            :style  {:width 24 :height 24}}]]
-        :on-press            #(hide-sheet-and-dispatch [::keycard/recover-with-keycard-pressed])}]
-      (when config/database-management-enabled?
-        [quo/list-item {:theme               :accent
-                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/import-db-submitted])
-                        :icon                :main-icons/receive
-                        :title               "Import unencrypted"}])
-      (when config/database-management-enabled?
-        [quo/list-item {:theme               :accent
-                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/export-db-submitted])
-                        :icon                :main-icons/send
-                        :title               "Export unencrypted"}])]]))
+;      (when config/database-management-enabled?
+;        [quo/list-item {:theme               :accent
+;                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/import-db-submitted])
+;                        :icon                :main-icons/receive
+;                        :title               "Import unencrypted"}])
+;      (when config/database-management-enabled?
+;        [quo/list-item {:theme               :accent
+;                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/export-db-submitted])
+;                        :icon                :main-icons/send
+;                        :title               "Export unencrypted"}])
+      ]]))
 
 (def bottom-sheet
   {:content bottom-sheet-view})

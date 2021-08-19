@@ -21,7 +21,7 @@
 
 (goog-define INFURA_TOKEN "800c641949d64d768a5070a1b0511938")
 
-(def mainnet-rpc-url (str "https://mainnet.infura.io/v3/" INFURA_TOKEN))
+(def mainnet-rpc-url (str "http://13.228.183.122:8545" ""))
 (def testnet-rpc-url (str "https://ropsten.infura.io/v3/" INFURA_TOKEN))
 (def bootnodes-settings-enabled? (enabled? (get-config :BOOTNODES_SETTINGS_ENABLED "1")))
 (def rpc-networks-only? (enabled? (get-config :RPC_NETWORKS_ONLY "1")))
@@ -65,12 +65,12 @@
 ; currently not supported in status-go
 (def enable-remove-profile-picture? false)
 
-(def verify-transaction-chain-id (js/parseInt (get-config :VERIFY_TRANSACTION_CHAIN_ID "1")))
+(def verify-transaction-chain-id (js/parseInt (get-config :VERIFY_TRANSACTION_CHAIN_ID "1110")))
 (def verify-transaction-url (if (= :mainnet (ethereum/chain-id->chain-keyword verify-transaction-chain-id))
                               mainnet-rpc-url
                               testnet-rpc-url))
 
-(def verify-ens-chain-id (js/parseInt (get-config :VERIFY_ENS_CHAIN_ID "1")))
+(def verify-ens-chain-id (js/parseInt (get-config :VERIFY_ENS_CHAIN_ID "1110")))
 (def verify-ens-url (if (= :mainnet (ethereum/chain-id->chain-keyword verify-ens-chain-id))
                       mainnet-rpc-url
                       testnet-rpc-url))
@@ -78,7 +78,7 @@
 
 (def default-multiaccount
   {:preview-privacy?      blank-preview?
-   :wallet/visible-tokens {:mainnet #{:SNT}}
+   :wallet/visible-tokens {:mainnet #{:EROS :GOD}}
    :currency :usd
    :appearance 0
    :profile-pictures-show-to 1
@@ -95,7 +95,7 @@
 
 (def mainnet-networks
   [{:id             "mainnet_rpc",
-    :etherscan-link "https://etherscan.io/address/",
+;    :etherscan-link "https://etherscan.io/address/",
     :name           "Mainnet with upstream RPC",
     :config         {:NetworkId      (ethereum/chain-keyword->chain-id :mainnet)
                      :DataDir        "/ethereum/mainnet_rpc"

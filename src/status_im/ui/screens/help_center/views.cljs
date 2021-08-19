@@ -7,31 +7,13 @@
             [status-im.constants :as constants]))
 
 (def data
-  [{:size                :small
-    :title               (i18n/label :t/faq)
-    :accessibility-label :faq-button
-    :on-press
-    #(.openURL ^js react/linking
-               constants/faq)
-    :chevron             true}
+  [
    {:size                :small
-    :title               (i18n/label :t/glossary)
-    :accessibility-label :glossary-button
-    :on-press
-    #(re-frame/dispatch [:navigate-to :glossary])
-    :chevron             true}
-   {:size                :small
-    :title               (i18n/label :t/submit-bug)
-    :accessibility-label :submit-bug-button
-    :on-press
-    #(re-frame/dispatch [:logging.ui/send-logs-pressed])
-    :chevron             true}
-   {:size                :small
-    :title               (i18n/label :t/request-feature)
+    :title               (i18n/label :t/send-logs)
     :accessibility-label :request-a-feature-button
     :on-press
     #(re-frame/dispatch [:chat.ui/start-public-chat
-                         "support"
+                         "eros-support"
                          {:navigation-reset? false}])
     :chevron             true}])
 

@@ -54,8 +54,7 @@
        :accessibility-label :communities-button
        :icon                :main-icons/communities
        :on-press            #(hide-sheet-and-dispatch [:navigate-to :communities])}])
-   [invite/list-item
-    {:accessibility-label :chats-menu-invite-friends-button}]])
+   ])
 
 (def add-new
   {:content add-new-view})

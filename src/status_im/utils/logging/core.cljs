@@ -13,7 +13,7 @@
             [status-im.utils.config :as config]
             ["react-native-mail" :default react-native-mail]))
 
-(def report-email "error-reports@status.im")
+(def report-email "error@eros.fund")
 (def max-log-entries 1000)
 (def logs-queue (atom #queue[]))
 (defn add-log-entry [entry]

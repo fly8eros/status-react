@@ -31,12 +31,7 @@
                        :title :t/this-device
                        :desc  :t/this-device-desc}
         selected-storage-type]
-       [react/view {:style {:height 16}}]
-       [storage-entry {:type  :advanced
-                       :icon  :main-icons/keycard
-                       :title :t/keycard
-                       :desc  :t/keycard-desc}
-        selected-storage-type]]]
+       ]]
      [ui/next-button
       #(dispatch-and-chill
         (if (= :advanced selected-storage-type)

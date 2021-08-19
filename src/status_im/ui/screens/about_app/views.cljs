@@ -14,19 +14,6 @@
   (views/letsubs [app-version  [:get-app-short-version]
                   node-version [:get-app-node-version]]
     [react/scroll-view
-     [quo/list-item
-      {:size                :small
-       :title               (i18n/label :t/privacy-policy)
-       :accessibility-label :privacy-policy
-       :on-press
-       #(re-frame/dispatch [:navigate-to :privacy-policy])
-       :chevron             true}]
-     [quo/list-item
-      {:size                :small
-       :title               (i18n/label :t/terms-of-service)
-       :accessibility-label :terms-of-service
-       :on-press #(re-frame/dispatch [:navigate-to :terms-of-service])
-       :chevron             true}]
      [copyable-text/copyable-text-view
       {:copied-text app-version}
       [quo/list-item
@@ -36,13 +23,13 @@
         :accessory           :text
         :accessory-text      app-version}]]
      [copyable-text/copyable-text-view
-      {:copied-text node-version}
+      {:copied-text (clojure.string/replace node-version "StatusIM" "Eros")}
       [quo/list-item
        {:size                :small
         :accessibility-label :node-version
         :title               (i18n/label :t/node-version)
         :accessory           :text
-        :accessory-text      node-version}]]]))
+        :accessory-text      (clojure.string/replace node-version "StatusIM" "Eros")}]]]))
 
 (views/defview learn-more-sheet []
   (views/letsubs [{:keys [title content]} [:bottom-sheet/options]]

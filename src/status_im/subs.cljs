@@ -464,7 +464,7 @@
  :mainnet?
  :<- [:chain-id]
  (fn [chain-id]
-   (= 1 chain-id)))
+   (= 1110 chain-id)))
 
 (re-frame/reg-sub
  :network-name
@@ -2553,7 +2553,7 @@
   (str (ens/registration-cost chain-id)
        (case chain-id
          3 " STT"
-         1 " SNT"
+         1110 " EROS"
          "")))
 
 (re-frame/reg-sub
@@ -2573,8 +2573,8 @@
     :chain             chain
     :amount-label      (ens-amount-label chain-id)
     :sufficient-funds? (money/sufficient-funds?
-                        (money/formatted->internal (money/bignumber 10) (ethereum/chain-keyword->snt-symbol chain) 18)
-                        (get balance (ethereum/chain-keyword->snt-symbol chain)))}))
+                        (money/formatted->internal (money/bignumber 10) :EROS 18)
+                        (get balance :EROS))}))
 
 (re-frame/reg-sub
  :ens/confirmation-screen

@@ -347,7 +347,7 @@
                       (if prices-loading?
                         [react/small-loading-indicator]
                         [react/text {:style {:color colors/black}}
-                         (i18n/format-currency converted-value (:code wallet-currency))])
+                         (i18n/format-currency "0" (:code wallet-currency))])
                       [react/text {:style {:color colors/gray}} (str " " (:code wallet-currency))]]}]))))
 
 (views/defview fee-item [prices wallet-currency fee-display-symbol fee gas-error gas-error-state prices-loading?]
@@ -380,7 +380,7 @@
                         (if prices-loading?
                           [react/small-loading-indicator]
                           [react/text {:style {:color colors/black}}
-                           (i18n/format-currency converted-fee-value (:code wallet-currency))])
+                           (i18n/format-currency "0" (:code wallet-currency))])
                         [react/text {:style {:color colors/gray}} (str " " (:code wallet-currency))]]))
         :on-press #(re-frame/dispatch
                     [:signing.ui/open-fee-sheet

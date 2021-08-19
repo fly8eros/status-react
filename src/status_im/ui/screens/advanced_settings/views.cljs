@@ -105,15 +105,7 @@
        [:multiaccounts.ui/switch-webview-debug (not webview-debug)])
      :accessory               :switch
      :active                  webview-debug}
-    {:size                    :small
-     :title                   (i18n/label :t/waku-bloom-filter-mode)
-     :accessibility-label     :waku-bloom-filter-mode-settings-switch
-     :container-margin-bottom 8
-     :on-press
-     #(re-frame/dispatch
-       [:multiaccounts.ui/waku-bloom-filter-mode-switched (not waku-bloom-filter-mode)])
-     :accessory               :switch
-     :active                  waku-bloom-filter-mode}]))
+    ]))
 
 (defn- flat-list-data [options]
   (normal-mode-settings-data options))
