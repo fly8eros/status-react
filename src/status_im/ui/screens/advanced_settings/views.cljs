@@ -39,20 +39,6 @@
      :accessory           :text
      :accessory-text      current-log-level
      :chevron             true}
-    {:size                :small
-     :title               (i18n/label :t/fleet)
-     :accessibility-label :fleet-settings-button
-     :on-press
-     #(re-frame/dispatch [:navigate-to :fleet-settings])
-     :accessory           :text
-     :accessory-text      current-fleet
-     :chevron             true}
-    {:size                :small
-     :title               (i18n/label :t/bootnodes)
-     :accessibility-label :bootnodes-settings-button
-     :on-press
-     #(re-frame/dispatch [:navigate-to :bootnodes-settings])
-     :chevron             true}
     {:size                 :small
      :title                (i18n/label :t/rpc-usage-info)
      :accessibility-label  :rpc-usage-info
@@ -87,15 +73,7 @@
        [:multiaccounts.ui/switch-webview-debug (not webview-debug)])
      :accessory               :switch
      :active                  webview-debug}
-    {:size                    :small
-     :title                   (i18n/label :t/waku-bloom-filter-mode)
-     :accessibility-label     :waku-bloom-filter-mode-settings-switch
-     :container-margin-bottom 8
-     :on-press
-     #(re-frame/dispatch
-       [:multiaccounts.ui/waku-bloom-filter-mode-switched (not waku-bloom-filter-mode)])
-     :accessory               :switch
-     :active                  waku-bloom-filter-mode}]))
+    ]))
 
 (defn- flat-list-data [options]
   (normal-mode-settings-data options))

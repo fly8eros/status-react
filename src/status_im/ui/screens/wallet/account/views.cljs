@@ -44,7 +44,7 @@
       [react/view {:style {:flex-direction :row}}
        (if prices-loading?
          [react/small-loading-indicator :colors/white-persist]
-         [react/text {:style {:font-size 32 :color colors/white-persist :font-weight "600"}} portfolio-value])
+         [react/text {:style {:font-size 32 :color colors/white-persist :font-weight "600"}} "0"])
        [react/text {:style {:font-size 32 :color colors/white-transparent-persist :font-weight "600"}} (str " " (:code currency))]]
       [quo/text {:number-of-lines 1
                  :ellipsize-mode  :middle
@@ -119,13 +119,13 @@
        (cond
          (= tab :assets)
          [:<>
-          [buy-crypto/banner]
+;          [buy-crypto/banner]
           (for [item tokens]
             ^{:key (:name item)}
             [accounts/render-asset item nil nil (:code currency)])]
          (= tab :nft)
          [react/view
-          [collectibles-link]
+;          [collectibles-link]
           (if (seq nfts)
             [:<>
              (for [item nfts]

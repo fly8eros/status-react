@@ -135,7 +135,7 @@
        [dots-selector {:progress progress
                        :n        (count slides)}]])))
 
-(defonce tos-accepted (reagent/atom false))
+(defonce tos-accepted (reagent/atom true))
 
 (defn intro []
   [react/view {:style styles/intro-view}
@@ -150,31 +150,10 @@
                :text  :intro-text3}]
     @(re-frame/subscribe [:dimensions/window-width])]
    [react/view {:style {:align-items :center}}
-    [react/view {:flex-direction  :row
-                 :justify-content :space-between
-                 :align-items     :center
-                 :margin-top      36
-                 :margin-bottom   24}
-     [quo/checkbox {:value     @tos-accepted
-                    :on-change #(swap! tos-accepted not)}]
-     [rn/touchable-opacity {:on-press #(swap! tos-accepted not)}
-      [react/nested-text {:style {:margin-left 12}}
-       (i18n/label :t/accept-status-tos-prefix)
-       [{:style               (merge {:color colors/blue}
-                                     typography/font-medium)
-         :on-press            #(re-frame/dispatch [:open-modal :terms-of-service])
-         :accessibility-label :terms-of-service-link}
-        " "
-        (i18n/label :t/terms-of-service)]]]]
     [react/view {:style {:margin-bottom 24}}
-     [quo/button {:disabled (not @tos-accepted)
-                  :on-press #(do (re-frame/dispatch [:init-root :onboarding])
+     [quo/button {:on-press #(do (re-frame/dispatch [:init-root :onboarding])
                                  ;; clear atom state for next use
                                  (reset! tos-accepted false)
                                  (re-frame/dispatch [:hide-terms-of-services-opt-in-screen]))}
       (i18n/label :t/get-started)]]
-    [react/text
-     {:style               {:color colors/blue}
-      :on-press            #(re-frame/dispatch [:open-modal :privacy-policy])
-      :accessibility-label :privacy-policy-link}
-     (i18n/label :t/privacy-policy)]]])
+    ]])

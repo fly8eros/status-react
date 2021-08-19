@@ -96,8 +96,7 @@
        [react/view styles/processing-view
         [react/activity-indicator {:animating true}]
         [react/i18n-text {:style styles/processing :key :processing}]]
-       (when-not (or keycard? banner-hidden)
-         [key-storage/keycard-upsell-banner]))
+       )
 
      [toolbar/toolbar
       {:size :large

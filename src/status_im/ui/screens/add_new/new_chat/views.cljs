@@ -168,11 +168,7 @@
                        :align-items :center
                        :padding-horizontal 58
                        :padding-top 160}
-           [quo/text {:size  :base
-                      :align :center
-                      :color :secondary}
-            (i18n/label :t/you-dont-have-contacts-invite-friends)]
-           [invite/button]]
+           ]
           [list/flat-list {:data      (filter-contacts @search-value contacts)
                            :key-fn    :address
                            :render-fn render-row}])]

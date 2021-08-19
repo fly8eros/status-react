@@ -120,8 +120,8 @@
 (def regx-bold #"\*[^*]+\*")
 (def regx-italic #"~[^~]+~")
 (def regx-backquote #"`[^`]+`")
-(def regx-universal-link #"((^https?://join.status.im/)|(^status-im://))[\x00-\x7F]+$")
-(def regx-community-universal-link #"((^https?://join.status.im/)|(^status-im://))c/([\x00-\x7F]+)$")
+(def regx-universal-link #"((^https?://join.eros.fund/)|(^status-im://))[\x00-\x7F]+$")
+(def regx-community-universal-link #"((^https?://join.eros.fund/)|(^status-im://))c/([\x00-\x7F]+)$")
 (def regx-deep-link #"((^ethereum:.*)|(^status-im://[\x00-\x7F]+$))")
 
 (def ^:const dapp-permission-contact-code "contact-code")
@@ -134,11 +134,11 @@
 (def ^:const web3-send-async-callback "web3-send-async-callback")
 (def ^:const scan-qr-code "scan-qr-code")
 
-(def ^:const faq "https://status.im/faq/")
+(def ^:const faq "https://eros.fund/faq/")
 (def ^:const faq-keycard (str faq "#keycard"))
-(def ^:const keycard-integration-link "https://status.im/keycard-integration")
+(def ^:const keycard-integration-link "https://eros.fund/keycard-integration")
 
-(def ^:const status-community-id "0x039b2da47552aa117a96ea8f1d4d108ba66637c7517a3c94a57b99dbb8a002eda2")
+(def ^:const status-community-id "0x02c27f89dcba5d5033eb7da841ab4e066f38af30a58e69bd458accb1ffa0a78e6e")
 
 (def ^:const timeline-chat-id "@timeline70bd746ddcc12beb96b2c9d572d0784ab137ffc774f5383e50585a932080b57cca0484b259e61cecbaa33a4c98a300a")
 
@@ -149,10 +149,10 @@
 
 (def ^:const metrics-github-link
   "https://github.com/status-im/status-go/blob/develop/_docs/app-metrics.md")
-(def ^:const privacy-policy-link "https://status.im/privacy-policy/")
-(def ^:const terms-of-service-link "https://status.im/terms-of-use")
-(def ^:const docs-link "https://status.im/docs/")
-(def ^:const principles-link "https://our.status.im/our-principles/")
+(def ^:const privacy-policy-link "https://eros.fund/privacy-policy/")
+(def ^:const terms-of-service-link "https://eros.fund/terms-of-use")
+(def ^:const docs-link "https://eros.fund/docs/")
+(def ^:const principles-link "https://our.eros.fund/our-principles/")
 
 (def ^:const activity-center-notification-type-one-to-one-chat 1)
 (def ^:const activity-center-notification-type-private-group-chat 2)

@@ -64,24 +64,24 @@
         chain @(re-frame/subscribe [:chain-keyword])
         registrar (stateofus/get-cached-registrar chain)]
     [:<>
-     [quo/list-item
-      (cond-> {:title                (or (when registrar preferred-name)
-                                         (i18n/label :t/ens-usernames))
-               :subtitle             (if registrar
-                                       (if preferred-name
-                                         (i18n/label :t/ens-your-your-name)
-                                         (i18n/label :t/ens-usernames-details))
-                                       (i18n/label :t/ens-network-restriction))
-               :subtitle-max-lines   (if registrar
-                                       (if preferred-name 1 2)
-                                       1)
-               :accessibility-label  :ens-button
-               :container-margin-top 8
-               :disabled             (not registrar)
-               :chevron              true
-               :icon                 :main-icons/username}
-        registrar
-        (assoc :on-press #(re-frame/dispatch [:navigate-to :ens-main registrar])))]
+;     [quo/list-item
+;      (cond-> {:title                (or (when registrar preferred-name)
+;                                         (i18n/label :t/ens-usernames))
+;               :subtitle             (if registrar
+;                                       (if preferred-name
+;                                         (i18n/label :t/ens-your-your-name)
+;                                         (i18n/label :t/ens-usernames-details))
+;                                       (i18n/label :t/ens-network-restriction))
+;               :subtitle-max-lines   (if registrar
+;                                       (if preferred-name 1 2)
+;                                       1)
+;               :accessibility-label  :ens-button
+;               :container-margin-top 8
+;               :disabled             (not registrar)
+;               :chevron              true
+;               :icon                 :main-icons/username}
+;        registrar
+;        (assoc :on-press #(re-frame/dispatch [:navigate-to :ens-main registrar])))]
      [quo/list-item
       {:title               (i18n/label :t/contacts)
        :icon                :main-icons/in-contacts

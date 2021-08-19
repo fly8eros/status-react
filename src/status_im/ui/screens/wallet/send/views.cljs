@@ -105,7 +105,7 @@
           amount (if (js/isNaN norm-amount) 0 norm-amount)]
       [react/text {:style {:color     colors/gray :margin-left 16 :margin-bottom 8
                            :font-size 15 :line-height 22}}
-       (str (i18n/format-currency (* amount price) (:code wallet-currency)) " " (:code wallet-currency))])))
+       (str (i18n/format-currency (* amount 0) (:code wallet-currency)) " " (:code wallet-currency))])))
 
 (defn select-account-sheet [{:keys [from message]}]
   [react/view {:style (styles/acc-sheet)}

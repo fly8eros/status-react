@@ -54,7 +54,7 @@
    (assoc (get multiaccount :link-previews-cache {}) site data)))
 
 (defn community-link [id]
-  (str "https://join.status.im/c/" id))
+  (str "https://join.eros.fund/c/" id))
 
 (defn cache-community-preview-data
   [{:keys [id] :as community}]

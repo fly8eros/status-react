@@ -346,7 +346,7 @@
   (fx/merge
    cofx
    (update-balance address 0)
-   (update-tokens-balances {address {:SNT 0}})))
+   (update-tokens-balances {address {:EROS 0}})))
 
 (fx/defn configure-token-balance-and-visibility
   {:events [::tokens-found]}

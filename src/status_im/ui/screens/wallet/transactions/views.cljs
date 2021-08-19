@@ -140,7 +140,7 @@
         all-fetched?             @(re-frame/subscribe [:wallet/tx-history-fetched? address])
         syncing-allowed?         @(re-frame/subscribe [:mobile-network/syncing-allowed?])]
     [react/view {:flex 1}
-     [etherscan-link address]
+;     [etherscan-link address]
      (cond non-archival-rpc-node?
            [non-archival-node]
            custom-rpc-node?
