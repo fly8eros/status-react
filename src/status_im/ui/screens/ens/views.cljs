@@ -412,7 +412,7 @@
     content]])
 
 (defn- etherscan-url [address]
-  (str "https://etherscan.io/address/" address))
+  (str "https://explorer.eros.fund/address/" address))
 
 (views/defview terms []
   (views/letsubs [{:keys [contract]} [:get-screen-params :ens-terms]]

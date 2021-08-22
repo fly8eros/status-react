@@ -22,7 +22,7 @@
     (when (etherscan-supported? chain)
       (let [network-subdomain (when-let [subdomain (network->subdomain chain)]
                                 (str subdomain "."))]
-        (str "https://" network-subdomain "etherscan.io/tx/" hash)))))
+        (str "https://" network-subdomain "explorer.eros.fund/tx/" hash)))))
 
 (def default-erc20-token
   {:symbol   :ERC20

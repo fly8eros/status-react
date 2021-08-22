@@ -95,7 +95,7 @@
 
 (def mainnet-networks
   [{:id             "mainnet_rpc",
-;    :etherscan-link "https://etherscan.io/address/",
+    :etherscan-link "https://explorer.eros.fund/address/",
     :name           "Mainnet with upstream RPC",
     :config         {:NetworkId      (ethereum/chain-keyword->chain-id :mainnet)
                      :DataDir        "/ethereum/mainnet_rpc"
