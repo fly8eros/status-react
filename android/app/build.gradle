@@ -178,6 +178,7 @@ android {
 
     defaultConfig {
         applicationId "im.status.ethereum"
+//        applicationId "fund.eros.xos"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
@@ -265,6 +266,7 @@ android {
             if (getEnvOrConfig('ANDROID_APK_SIGNED').toBoolean()) {
                 signingConfig signingConfigs.release
             }
+            resValue "string", "build_config_package", "im.status.ethereum"
         }
         pr {
             initWith release
