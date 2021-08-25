@@ -21,7 +21,7 @@
 
 (goog-define INFURA_TOKEN "800c641949d64d768a5070a1b0511938")
 
-(def mainnet-rpc-url (str "http://13.228.183.122:8545" ""))
+(def mainnet-rpc-url (str "https://mainnet.eros.fund" ""))
 (def testnet-rpc-url (str "https://ropsten.infura.io/v3/" INFURA_TOKEN))
 (def bootnodes-settings-enabled? (enabled? (get-config :BOOTNODES_SETTINGS_ENABLED "1")))
 (def rpc-networks-only? (enabled? (get-config :RPC_NETWORKS_ONLY "1")))
