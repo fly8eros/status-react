@@ -70,6 +70,10 @@
                    {:symbol   :GOD
                     :name     "GOD"
                     :address  "0x99dfa8964e635ebdbe347b02422083bfc3f20da0"
+                    :decimals 18}
+                   {:symbol   :USDT
+                    :name     "USDT"
+                    :address  "0x98A3d8D7F90DD73CbA99B3b1315f5bc9d96280c6"
                     :decimals 18}])
    :testnet
    (resolve-icons :testnet
