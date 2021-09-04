@@ -258,6 +258,8 @@ run-re-frisk: ##@run Start re-frisk server
 # TODO: Migrate this to a Nix recipe, much the same way as nix/mobile/android/targets/release-android.nix
 run-android: export TARGET := android
 run-android: ##@run Build Android APK and start it on the device
+	$(shell sed -i '180c\        applicationId "im.status.ethereum"' $(PWD)/android/app/build.gradle)
+	$(shell sed -i '181c // applicationId "fund.eros.xos"' $(PWD)/android/app/build.gradle)
 	npx react-native run-android --appIdSuffix debug
 
 SIMULATOR=
