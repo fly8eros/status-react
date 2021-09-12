@@ -125,7 +125,7 @@
             [accounts/render-asset item nil nil (:code currency)])]
          (= tab :nft)
          [react/view
-;          [collectibles-link]
+          [collectibles-link]
           (if (seq nfts)
             [:<>
              (for [item nfts]
