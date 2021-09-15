@@ -39,6 +39,14 @@
      :accessory           :text
      :accessory-text      current-log-level
      :chevron             true}
+    {:size                :small
+     :title               (i18n/label :t/fleet)
+     :accessibility-label :fleet-settings-button
+     :on-press
+     #(re-frame/dispatch [:navigate-to :fleet-settings])
+     :accessory           :text
+     :accessory-text      current-fleet
+     :chevron             true}
     {:size                 :small
      :title                (i18n/label :t/rpc-usage-info)
      :accessibility-label  :rpc-usage-info
