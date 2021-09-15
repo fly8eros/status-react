@@ -376,12 +376,12 @@
            (when-not @(re-frame/subscribe [:chats/edit-message])
              [rn/view {:style (merge {:flex-direction :row} (when show-send {:width 0 :right -100}))
                        :ref   sticker-ref}
-              (when stickers
-                [touchable-stickers-icon {:panel               :stickers
-                                          :accessibility-label :show-stickers-icon
-                                          :active              active-panel
-                                          :input-focus         #(input-focus text-input-ref)
-                                          :set-active          set-active-panel}])
+;              (when stickers
+;                [touchable-stickers-icon {:panel               :stickers
+;                                          :accessibility-label :show-stickers-icon
+;                                          :active              active-panel
+;                                          :input-focus         #(input-focus text-input-ref)
+;                                          :set-active          set-active-panel}])
               (when audio
                 [touchable-audio-icon {:panel               :audio
                                        :accessibility-label :show-audio-message-icon
