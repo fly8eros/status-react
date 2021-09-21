@@ -65,16 +65,16 @@
         :accessibility-label :enter-seed-phrase-button
         :icon                :main-icons/text
         :on-press            #(hide-sheet-and-dispatch [::multiaccounts.recover/enter-phrase-pressed])}]
-;      (when config/database-management-enabled?
-;        [quo/list-item {:theme               :accent
-;                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/import-db-submitted])
-;                        :icon                :main-icons/receive
-;                        :title               "Import unencrypted"}])
-;      (when config/database-management-enabled?
-;        [quo/list-item {:theme               :accent
-;                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/export-db-submitted])
-;                        :icon                :main-icons/send
-;                        :title               "Export unencrypted"}])
+      (when config/database-management-enabled?
+        [quo/list-item {:theme               :accent
+                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/import-db-submitted])
+                        :icon                :main-icons/receive
+                        :title               "Import unencrypted"}])
+      (when config/database-management-enabled?
+        [quo/list-item {:theme               :accent
+                        :on-press            #(hide-sheet-and-dispatch [:multiaccounts.login.ui/export-db-submitted])
+                        :icon                :main-icons/send
+                        :title               "Export unencrypted"}])
       ]]))
 
 (def bottom-sheet
