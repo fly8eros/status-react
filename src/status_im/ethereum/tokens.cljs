@@ -17,7 +17,7 @@
   (ethereum.macros/resolve-native-currency-icons
    {:mainnet {:name     "XOS"
               :symbol   :ETH
-              :symbol-display :XOS
+              :symbol-display :GOD
               :decimals 18}
     :testnet {:name           "Ropsten Ether"
               :symbol         :ETH
@@ -160,8 +160,7 @@
 
 (defn asset-for [all-tokens chain symbol]
   (let [native-coin (native-currency chain)]
-    (if (or (= (:symbol-display native-coin) symbol)
-            (= (:symbol native-coin) symbol))
+    (if (= (:symbol native-coin) symbol)
       native-coin
       (symbol->token all-tokens symbol))))
 

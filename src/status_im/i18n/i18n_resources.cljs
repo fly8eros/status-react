@@ -6,7 +6,7 @@
 (def default-device-language
   (keyword (.-language react-native-languages)))
 
-(def languages #{:en :zh :zh_Hant :zh_TW})
+(def languages #{:en :zh :zh_TW})
 
 (defonce loaded-languages
   (atom
@@ -28,7 +28,6 @@
     (case lang
       :en         (js/require "../translations/en.json")
       :zh         (js/require "../translations/zh.json")
-      :zh_Hant    (js/require "../translations/zh_hant.json")
       :zh_TW      (js/require "../translations/zh_TW.json"))))
 
 ;; translations

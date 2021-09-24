@@ -83,7 +83,7 @@
                   currency [:wallet/currency]]
     [:<>
      (for [item tokens]
-       ^{:key (:name item)}
+       ^{:key (:symbol item)}
        [render-asset item nil nil (:code currency)])]))
 
 (views/defview send-button []
