@@ -57,6 +57,13 @@
                     (when (and data (.-dataJSON data))
                       (handle-notification-press (types/json->clj (.-dataJSON data))))))))
 
+(defn- to-currency
+  [token]
+  (let [sym (:symbol token)]
+    (cond
+     (= sym :ETH) :GOD
+     :else sym)))
+
 (defn create-transfer-notification
   [{{:keys [state from to fromAccount toAccount value erc20 contract network]}
     :body
@@ -72,11 +79,11 @@
         from        (or (:name fromAccount) (utils/get-shortened-address from))
         title       (case state
                       "inbound"  (i18n/label :t/push-inbound-transaction {:value    amount
-                                                                          :currency (:symbol token)})
+                                                                          :currency (to-currency token)})
                       "outbound" (i18n/label :t/push-outbound-transaction {:value    amount
-                                                                           :currency (:symbol token)})
+                                                                           :currency (to-currency token)})
                       "failed"   (i18n/label :t/push-failed-transaction {:value    amount
-                                                                         :currency (:symbol token)})
+                                                                         :currency (to-currency token)})
                       nil)
         description (case state
                       "inbound"  (i18n/label :t/push-inbound-transaction-body {:from from
@@ -84,7 +91,7 @@
                       "outbound" (i18n/label :t/push-outbound-transaction-body {:from from
                                                                                 :to   to})
                       "failed"   (i18n/label :t/push-failed-transaction-body {:value    amount
-                                                                              :currency (:symbol token)
+                                                                              :currency (to-currency token)
                                                                               :to       to})
                       nil)]
     {:title     title
