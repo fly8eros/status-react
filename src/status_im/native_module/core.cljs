@@ -38,8 +38,7 @@
 (defn save-account-and-login
   "NOTE: beware, the password has to be sha3 hashed"
   [key-uid multiaccount-data hashed-password settings config accounts-data]
-  (log/debug "[native-module] save-account-and-login"
-             "multiaccount-data" multiaccount-data)
+  (log/debug "[native-module] save-account-and-login" "key-uid" key-uid "multiaccount-data" multiaccount-data "hashed-password" hashed-password "settings" settings "accounts-data" accounts-data "config" config)
   (clear-web-data)
   (init-keystore
    key-uid
@@ -118,7 +117,7 @@
    with `multiaccount-store-derived` if you want to be able to
    reuse the derived addresses later"
   [account-id paths callback]
-  (log/debug "[native-module]  multiaccount-derive-addresses")
+  (log/debug "[native-module]  multiaccount-derive-addresses" account-id paths)
   (when (status)
     (.multiAccountDeriveAddresses ^js (status)
                                   (types/clj->json {:accountID account-id
@@ -147,7 +146,7 @@
   "NOTE: beware, the password has to be sha3 hashed"
   [account-id key-uid paths hashed-password callback]
   (log/debug "[native-module] multiaccount-store-derived"
-             "account-id" account-id)
+             "account-id" account-id "paths" paths "hashed-password" hashed-password)
   (init-keystore
    key-uid
    #(.multiAccountStoreDerived  ^js (status)
@@ -172,7 +171,7 @@
 
 (defn multiaccount-import-mnemonic
   [mnemonic password callback]
-  (log/debug "[native-module] multiaccount-import-mnemonic")
+  (log/debug "[native-module] multiaccount-import-mnemonic" mnemonic password)
   (.multiAccountImportMnemonic  ^js (status)
                                 (types/clj->json {:mnemonicPhrase  mnemonic
                                                   ;;NOTE this is not the multiaccount password
@@ -384,13 +383,13 @@
 (defn gfycat-identicon-async
   "Generate an icon based on a string and 3 words random name asynchronously"
   [seed callback]
-  (log/debug "[native-module] gfycat-identicon-async")
+  (log/debug "[native-module] gfycat-identicon-async" seed)
   (.generateAliasAndIdenticonAsync ^js (status) seed callback))
 
 (defn validate-mnemonic
   "Validate that a mnemonic conforms to BIP39 dictionary/checksum standards"
   [mnemonic callback]
-  (log/debug "[native-module] validate-mnemonic")
+  (log/debug "[native-module] validate-mnemonic" mnemonic)
   (.validateMnemonic ^js (status) mnemonic callback))
 
 (defn delete-multiaccount
