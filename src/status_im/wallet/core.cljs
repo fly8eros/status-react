@@ -751,6 +751,9 @@
      #(re-frame.core/dispatch [::restart])
      interval)))
 
+(defn- reset-all-fetched? [db addresses]
+  (reduce #(assoc-in %1 [:wallet :fetching %2 :all-fetched?] :all-preloaded) db addresses))
+
 (fx/defn check-recent-history
   [{:keys [db] :as cofx}
    {:keys [on-recent-history-fetching force-restart?]}]
@@ -763,7 +766,8 @@
                         (assoc :wallet-service/restart-timeout timeout
                                :wallet-service/custom-interval (get-next-custom-interval db)
                                :wallet/was-started? true
-                               :wallet/on-recent-history-fetching on-recent-history-fetching))
+                               :wallet/on-recent-history-fetching on-recent-history-fetching)
+                        (reset-all-fetched? addresses))
      ::check-recent-history addresses
      ::utils.utils/clear-timeouts
      [(when (not= timeout old-timeout) old-timeout)]}))
