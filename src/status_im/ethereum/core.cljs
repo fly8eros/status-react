@@ -22,6 +22,8 @@
 
 (def chains
   {:mainnet {:id 1110 :name "Mainnet"}
+   :heco    {:id 128 :name "HECO"}
+   :bsc     {:id 56 :name "BSC"}
    :testnet {:id 3 :name "Ropsten"}
    :rinkeby {:id 4 :name "Rinkeby"}
    :xdai    {:id 100 :name "xDai"}

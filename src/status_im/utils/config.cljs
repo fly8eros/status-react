@@ -96,11 +96,25 @@
 (def mainnet-networks
   [{:id             "mainnet_rpc",
     :etherscan-link "https://explorer.eros.fund/address/",
-    :name           "Mainnet with upstream RPC",
+    :name           "GOD",
     :config         {:NetworkId      (ethereum/chain-keyword->chain-id :mainnet)
                      :DataDir        "/ethereum/mainnet_rpc"
                      :UpstreamConfig {:Enabled true
-                                      :URL mainnet-rpc-url}}}])
+                                      :URL mainnet-rpc-url}}}
+   {:id             "heco",
+    :etherscan-link "https://hecoinfo.com/address/",
+    :name           "HECO",
+    :config         {:NetworkId      (ethereum/chain-keyword->chain-id :heco)
+                     :DataDir        "/ethereum/heco_rpc"
+                     :UpstreamConfig {:Enabled true
+                                      :URL "https://http-mainnet.hecochain.com"}}}
+   {:id             "bsc",
+    :etherscan-link "https://bscscan.com/address/",
+    :name           "BSC",
+    :config         {:NetworkId      (ethereum/chain-keyword->chain-id :bsc)
+                     :DataDir        "/ethereum/bsc_rpc"
+                     :UpstreamConfig {:Enabled true
+                                      :URL "https://bsc-dataseed.binance.org"}}}])
 
 (def sidechain-networks
   [{:id     "xdai_rpc",
