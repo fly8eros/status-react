@@ -61,7 +61,8 @@
   [token]
   (let [sym (:symbol token)]
     (cond
-     (= sym :ETH) :GOD
+      ;;only native-currency should has defined :symbol-display property
+     (= sym :ETH) (:symbol-display token)
      :else sym)))
 
 (defn create-transfer-notification

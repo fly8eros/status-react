@@ -15,10 +15,18 @@
 
 (def all-native-currencies
   (ethereum.macros/resolve-native-currency-icons
-   {:mainnet {:name     "XOS"
-              :symbol   :ETH
+   {:mainnet {:name           "GOD"
+              :symbol         :ETH
               :symbol-display :GOD
-              :decimals 18}
+              :decimals       18}
+    :bsc     {:name           "BNB"
+              :symbol         :ETH
+              :symbol-display :BNB
+              :decimals       18}
+    :heco    {:name           "HT"
+              :symbol         :ETH
+              :symbol-display :HT
+              :decimals       18}
     :testnet {:name           "Ropsten Ether"
               :symbol         :ETH
               :symbol-display :ETHro
@@ -74,6 +82,18 @@
                    {:symbol   :USDT
                     :name     "USDT"
                     :address  "0x98A3d8D7F90DD73CbA99B3b1315f5bc9d96280c6"
+                    :decimals 18}])
+   :bsc
+   (resolve-icons :bsc
+                  [{:symbol   :USDT
+                    :name     "USDT"
+                    :address  "0x55d398326f99059ff775485246999027b3197955"
+                    :decimals 18}])
+   :heco
+   (resolve-icons :heco
+                  [{:symbol   :USDT
+                    :name     "USDT"
+                    :address  "0xa71edc38d189767582c38a3145b5873052c3e47a"
                     :decimals 18}])
    :testnet
    (resolve-icons :testnet

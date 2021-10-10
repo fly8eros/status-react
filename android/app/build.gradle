@@ -178,7 +178,7 @@ android {
 
     defaultConfig {
         applicationId "im.status.ethereum"
-//        applicationId "fund.eros.xos"
+// applicationId "fund.eros.xos"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
