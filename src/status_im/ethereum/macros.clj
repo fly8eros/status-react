@@ -36,7 +36,7 @@
 (defn network->icon [network]
   (let [s     (str "../resources/images/tokens/" (name network) "/0-native.png")
         image (gensym)]
-    (if (.exists (io/file s))
+    (if (.exists (io/file (subs s 1)))
       `(let [~image (atom nil)]
          (fn []
            (or @~image
