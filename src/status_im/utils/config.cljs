@@ -78,7 +78,7 @@
 
 (def default-multiaccount
   {:preview-privacy?      blank-preview?
-   :wallet/visible-tokens {:mainnet #{:EROS :GOD :USDT}}
+   :wallet/visible-tokens {:mainnet #{:EROS :GOD :USDT} :bsc #{:USDT} :heco #{:USDT}}
    :currency :usd
    :appearance 0
    :profile-pictures-show-to 1
