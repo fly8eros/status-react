@@ -75,7 +75,7 @@
 
 (def default-multiaccount
   {:preview-privacy?      blank-preview?
-   :wallet/visible-tokens {:mainnet #{:EROS :GOD :USDT} :bsc #{:USDT} :heco #{:USDT}}
+   :wallet/visible-tokens {:mainnet #{:EROS :GOD :USDT} :bsc #{:USDT} :heco #{:USDT} :ethereum #{:USDT}}
    :currency :usd
    :appearance 0
    :profile-pictures-visibility 1
@@ -109,7 +109,14 @@
     :config         {:NetworkId      (ethereum/chain-keyword->chain-id :bsc)
                      :DataDir        "/ethereum/bsc_rpc"
                      :UpstreamConfig {:Enabled true
-                                      :URL "https://bsc-dataseed.binance.org"}}}])
+                                      :URL "https://bsc-dataseed.binance.org"}}}
+   {:id             "ethereum",
+    :etherscan-link "https://etherscan.io/address/",
+    :name           "Ethereum",
+    :config         {:NetworkId      (ethereum/chain-keyword->chain-id :ethereum)
+                     :DataDir        "/ethereum/ethereum"
+                     :UpstreamConfig {:Enabled true
+                                      :URL "https://mainnet.infura.io/v3/800c641949d64d768a5070a1b0511938"}}}])
 
 (def sidechain-networks
   [{:id     "xdai_rpc",

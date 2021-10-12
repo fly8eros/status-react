@@ -21,14 +21,15 @@
 ;; IDs standardized in https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md#list-of-chain-ids
 
 (def chains
-  {:mainnet {:id 1110 :name "Mainnet"}
-   :heco    {:id 128 :name "HECO"}
-   :bsc     {:id 56 :name "BSC"}
-   :testnet {:id 3 :name "Ropsten"}
-   :rinkeby {:id 4 :name "Rinkeby"}
-   :xdai    {:id 100 :name "xDai"}
-   :poa     {:id 99 :name "POA"}
-   :goerli  {:id 5 :name "Goerli"}})
+  {:mainnet  {:id 1110 :name "Mainnet"}
+   :heco     {:id 128 :name "HECO"}
+   :bsc      {:id 56 :name "BSC"}
+   :ethereum {:id 1 :name "Ethereum"}
+   :testnet  {:id 3 :name "Ropsten"}
+   :rinkeby  {:id 4 :name "Rinkeby"}
+   :xdai     {:id 100 :name "xDai"}
+   :poa      {:id 99 :name "POA"}
+   :goerli   {:id 5 :name "Goerli"}})
 
 (defn chain-id->chain-keyword [i]
   (or (some #(when (= i (:id (val %))) (key %)) chains)
