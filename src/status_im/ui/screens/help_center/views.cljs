@@ -9,7 +9,7 @@
 (def data
   [
    {:size                :small
-    :title               (i18n/label :t/send-logs)
+    :title               (i18n/label :t/request-feature)
     :accessibility-label :request-a-feature-button
     :on-press
     #(re-frame/dispatch [:chat.ui/start-public-chat
