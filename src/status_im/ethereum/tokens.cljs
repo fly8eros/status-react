@@ -86,6 +86,14 @@
                    {:symbol   :USDT
                     :name     "USDT"
                     :address  "0x98A3d8D7F90DD73CbA99B3b1315f5bc9d96280c6"
+                    :decimals 18}
+                   {:symbol   :GODUSDT
+                    :name     "GODUSDT"
+                    :address  "0xEE404B0761395FfF0c5b9b1D275Eb505f36c45e0"
+                    :decimals 18}
+                   {:symbol   :GODEROS
+                    :name     "GODEROS"
+                    :address  "0xad56ecBba7F626cB19566474b9dCfAa638f3C6E1"
                     :decimals 18}])
    :bsc
    (resolve-icons :bsc
