@@ -113,7 +113,7 @@
          [:<>
 ;          [buy-crypto/banner]
           (for [item tokens]
-            ^{:key (:name item)}
+            ^{:key (:symbol item)}
             [accounts/render-asset item nil nil (:code currency)])]
          (= tab :nft)
          [:<>
