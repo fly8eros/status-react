@@ -110,6 +110,7 @@
        (if (> cnt 0)
          [react/view
           (for [account accounts]
+            ^{:key (:address account)}
             [render-account account])]
          [empty-items :main-icons/address (i18n/label :t/my-accounts-empty)])])))
 
@@ -135,6 +136,7 @@
      (if (> cnt 0)
        [react/view
         (for [tx txs]
+          ^{:key (:hash tx)}
           [render-recent tx])]
        [empty-items :main-icons/history (i18n/label :t/recent-empty)])]))
 
@@ -191,6 +193,7 @@
                   accounts [:accounts-for-recipient]]
     [react/view
      (for [account accounts]
+       ^{:key (:address account)}
        [render-account account])
      (for [data favourites]
        [render-fav data])
