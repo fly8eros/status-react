@@ -74,7 +74,7 @@
                           [quo/text {:color  :secondary
                                      :weight :inherit}
                            (wallet.utils/display-symbol token)]]
-    :subtitle            (str (if value value "...") " " currency)
+    :subtitle            (str (if value "..." "...") " " currency)
     :accessibility-label (str (:symbol token) "-asset-value")
     :icon                (if icon
                            [wallet.components/token-icon icon]
