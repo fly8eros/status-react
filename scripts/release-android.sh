@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 ANDROID_BUILD_FILE="$(pwd)/android/app/build.gradle"
-sed -i '180c // applicationId "im.status.ethereum"' $ANDROID_BUILD_FILE
-sed -i '181c\        applicationId "fund.eros.xos"' $ANDROID_BUILD_FILE
+sed -i '187c // applicationId "im.status.ethereum"' $ANDROID_BUILD_FILE
+sed -i '188c\        applicationId "fund.eros.xos"' $ANDROID_BUILD_FILE
 
 # Needed to fail on must_get_env()
 set -e
