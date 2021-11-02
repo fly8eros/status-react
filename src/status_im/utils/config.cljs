@@ -123,6 +123,14 @@
                      :UpstreamConfig {:Enabled true
                                       :URL "https://mainnet.infura.io/v3/800c641949d64d768a5070a1b0511938"}}}])
 
+(def default-dapps-network
+  (let [network (first (filter #(= default-network (:id %)) mainnet-networks))]
+    {:networkId (get-in network [:config :NetworkId])
+     :name (:name network)}))
+
+(def dapps-networks
+  (map #(identity {:name (:name %) :networkId (get-in % [:config :NetworkId])}) mainnet-networks))
+
 (def sidechain-networks
   [{:id     "xdai_rpc",
     :name   "xDai Chain",

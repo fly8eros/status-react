@@ -225,6 +225,7 @@
          var messageId = callbackId++;
          var payload = {id:      messageId,
                         jsonrpc: "2.0",
+                        chainId: window.statusAppNetworkId,
                         method:  method,
                         params:  requestArguments.params};
 

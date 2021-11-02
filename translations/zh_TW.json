@@ -1322,6 +1322,7 @@
     "select": "選擇",
     "select-account": "選擇帳號",
     "select-account-dapp": "選擇您希望用於Dapps的帳戶",
+    "select-network-dapp": "選擇您希望用於Dapps的網絡",
     "select-account-first": "首先選擇一個帳號",
     "select-chat": "選擇聊天以開始發送訊息",
     "select-new-location-for-keys": "選擇一個新位置以保存您的私鑰",

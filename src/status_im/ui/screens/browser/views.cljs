@@ -12,6 +12,7 @@
             [status-im.ui.components.tooltip.views :as tooltip]
             [status-im.ui.components.webview :as components.webview]
             [status-im.ui.screens.browser.accounts :as accounts]
+            [status-im.ui.screens.browser.networks :as networks]
             [status-im.ui.screens.browser.permissions.views :as permissions.views]
             [status-im.ui.screens.browser.site-blocked.views :as site-blocked.views]
             [status-im.ui.screens.browser.styles :as styles]
@@ -64,7 +65,7 @@
     [react/text {:style styles/web-view-error-text}
      (str desc)]]))
 
-(views/defview navigation [{:keys [url can-go-back? can-go-forward? dapps-account empty-tab browser-id name]}]
+(views/defview navigation [{:keys [url can-go-back? can-go-forward? dapps-account dapps-network dapps-networks empty-tab browser-id name]}]
   (views/letsubs [accounts [:visible-accounts-without-watch-only]]
     [react/view (styles/navbar)
      [react/touchable-highlight {:on-press            #(if can-go-back?
@@ -87,11 +88,17 @@
                                                  {:content (accounts/accounts-list accounts dapps-account)}])}
       [chat-icon/custom-icon-view-list (:name dapps-account) (:color dapps-account) 32]]
 
+     (if-not empty-tab
+       [react/touchable-highlight
+        {:accessibility-label :select-dapps-network
+         :on-press            #(re-frame/dispatch [:bottom-sheet/show-sheet
+                                                   {:content (networks/networks-list dapps-networks dapps-network)}])}
+        [chat-icon/custom-icon-view-list (:name dapps-network) "#4360df" 32]])
+
      [react/touchable-highlight
       {:on-press #(re-frame/dispatch [:set-stack-root :browser-stack :browser-tabs])
        :accessibility-label :browser-open-tabs}
       [icons/icon :main-icons/tabs {:color colors/black}]]
-
      (if empty-tab
        [react/touchable-highlight
         {:accessibility-label :universal-qr-scanner
@@ -167,7 +174,7 @@
 ;; that's why it can't be used in `browser`, because `url` comes from subs
 (views/defview browser-component
   [{:keys [error? url browser-id unsafe? can-go-back? ignore-unsafe
-           can-go-forward? resolving? network-id url-original dapp? dapp
+           can-go-forward? resolving? network networks url-original dapp? dapp
            show-permission show-tooltip name dapps-account resources-permission?]}]
   {:should-component-update (fn [_ _ args]
                               (let [[_ props] args]
@@ -202,12 +209,14 @@
         :on-message                                 #(re-frame/dispatch [:browser/bridge-message-received (.. ^js % -nativeEvent -data)])
         :on-load                                    #(re-frame/dispatch [:browser/loading-started])
         :on-error                                   #(re-frame/dispatch [:browser/error-occured])
-        :injected-java-script-before-content-loaded (js-res/ethereum-provider (str network-id))}])]
+        :injected-java-script-before-content-loaded (js-res/ethereum-provider (str (:networkId network)) networks)}])]
    [navigation {:url url-original
                 :name name
                 :can-go-back? can-go-back?
                 :can-go-forward? can-go-forward?
                 :dapps-account dapps-account
+                :dapps-network network
+                :dapps-networks networks
                 :browser-id browser-id}]
    [permissions.views/permissions-panel [dapp? dapp dapps-account] show-permission]
    (when show-tooltip
@@ -220,10 +229,14 @@
 (views/defview browser []
   (views/letsubs [window-width [:dimensions/window-width]
                   {:keys [browser-id dapp? dapp name unsafe? ignore-unsafe secure?] :as browser} [:get-current-browser]
-                  {:keys [url error? loading? url-editing? show-tooltip show-permission resolving?]} [:browser/options]
+                  {:keys [url error? loading? url-editing? show-tooltip show-permission resolving?] :as browser-options} [:browser/options]
                   dapps-account [:dapps-account]
-                  network-id [:chain-id]
+                  network [:dapps-networks/current-network]
+                  networks [:dapps-networks/networks]
+                  network-changed? [:dapps-networks/network-changed?]
                   {:keys [webview-allow-permission-requests?]} [:multiaccount]]
+    ;use :component-did-update to make sure db(e.g. :dapps-networks/current-network) get update first, then reload page
+    {:component-did-update #(when network-changed? (re-frame/dispatch [:browser/reload-event]))}
     (let [can-go-back?    (browser/can-go-back? browser)
           can-go-forward? (browser/can-go-forward? browser)
           url-original    (browser/get-current-url browser)]
@@ -244,7 +257,8 @@
                            :can-go-back?          can-go-back?
                            :can-go-forward?       can-go-forward?
                            :resolving?            resolving?
-                           :network-id            network-id
+                           :network               network
+                           :networks              networks
                            :show-permission       show-permission
                            :show-tooltip          show-tooltip
                            :name                  name

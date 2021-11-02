@@ -1367,6 +1367,7 @@
     "grant-face-id-permissions": "To grant the required Face ID permission, please go to your system settings and make sure that Eros > Face ID is selected",
     "request-feature": "Request a feature",
     "select-account-dapp": "Select the account you wish to use with Dapps",
+    "select-network-dapp": "Select the network you wish to use with Dapps",
     "apply": "Apply",
     "on-status-tree": "On Eros tree",
     "off-status-tree": "Off Eros tree",

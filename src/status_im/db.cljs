@@ -1,7 +1,8 @@
 (ns status-im.db
   (:require [status-im.utils.dimensions :as dimensions]
             [status-im.fleet.core :as fleet]
-            [status-im.wallet.db :as wallet.db]))
+            [status-im.wallet.db :as wallet.db]
+            [status-im.utils.config :as config]))
 
 ;; initial state of app-db
 (def app-db {:contacts/contacts                  {}
@@ -39,4 +40,7 @@
                                                                    :confirmation []
                                                                    :current      []
                                                                    :puk          []
-                                                                   :enter-step   :original}}})
+                                                                   :enter-step   :original}}
+             :dapps-networks/networks             config/dapps-networks
+             :dapps-networks/current-network      config/default-dapps-network
+             :dapps-networks/network-changed?     false})

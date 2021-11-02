@@ -511,6 +511,27 @@
        (.injectJavaScript webview msg)))))
 
 (re-frame/reg-fx
+  :browser/reload
+  (fn []
+    (let [^js webview @webview-ref/webview-ref]
+      (.reload webview))))
+
+(fx/defn handle-browser-reload-event
+  {:events [:browser/reload-event]}
+  [{:keys [db]}]
+  {:db (assoc db :dapps-networks/network-changed? false)
+   :browser/reload []})
+
+(fx/defn dapps-network-selected
+  {:events [:dapps-network-selected]}
+  [{:keys [db] :as cofx} network]
+  (fx/merge cofx
+            {:db (assoc db
+                   :dapps-networks/current-network network
+                   :dapps-networks/network-changed? true)}
+            (bottom-sheet/hide-bottom-sheet)))
+
+(re-frame/reg-fx
  :browser/call-rpc
  (fn [[payload callback]]
    (status/call-rpc
@@ -553,6 +574,8 @@
             #(when (= (:view-id db) :browser)
                (merge (navigation/navigate-back %)
                       {:dispatch [:browser.ui/browser-item-selected (get-in db [:browser/options :browser-id])]}))))
+
+
 
 (fx/defn open-empty-tab
   {:events [:browser.ui/open-empty-tab]}
