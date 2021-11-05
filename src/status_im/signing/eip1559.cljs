@@ -33,12 +33,12 @@
          (reset! london-activated? true)
          (enabled-callback))
 
-       (not definitely-activated?)
-       (check-activation
-        (fn [activated?]
-          (if activated?
-            (enabled-callback)
-            (disabled-callback))))
+       ;(not definitely-activated?)
+       ;(check-activation
+       ; (fn [activated?]
+       ;   (if activated?
+       ;     (enabled-callback)
+       ;     (disabled-callback))))
 
        :else
        (do
