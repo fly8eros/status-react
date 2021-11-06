@@ -14,7 +14,7 @@
              :sync-state                         :done
              :link-previews-whitelist            []
              :app-state                          "active"
-             :wallet                              wallet.db/default-wallet
+             :wallet                             wallet.db/default-wallet
              :wallet/all-tokens                  {}
              :peers-count                        0
              :node-info                          {}
@@ -35,12 +35,12 @@
              :registry                           {}
              :stickers/packs-owned               #{}
              :stickers/packs-pending             #{}
-             :keycard                            {:nfc-enabled?   false
-                                                  :pin            {:original     []
-                                                                   :confirmation []
-                                                                   :current      []
-                                                                   :puk          []
-                                                                   :enter-step   :original}}
-             :dapps-networks/networks             config/dapps-networks
-             :dapps-networks/current-network      config/default-dapps-network
-             :dapps-networks/network-changed?     false})
+             :keycard                            {:nfc-enabled? false
+                                                  :pin          {:original     []
+                                                                 :confirmation []
+                                                                 :current      []
+                                                                 :puk          []
+                                                                 :enter-step   :original}}
+             :dapps-networks/networks            config/dapps-networks
+             :dapps-networks/current-network     (config/get-dapps-network)
+             :dapps-networks/network-changed?    false})

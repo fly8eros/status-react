@@ -298,6 +298,7 @@
                        (dissoc :multiaccounts/login)
                        (assoc :networks/current-network current-network
                               :networks/networks networks
+                              :dapps-networks/current-network (config/get-dapps-network current-network)
                               :multiaccount multiaccount))}
               (data-store.chats/fetch-chats-rpc
                {:on-success
