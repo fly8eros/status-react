@@ -3,7 +3,7 @@
     "_comment": "Instead use: scripts/update-status-go.sh <rev>",
     "owner": "fly8eros",
     "repo": "status-go",
-    "version": "main_after_rebase_1.17.x",
-    "commit-sha1": "ec881213e73d5346516d6cef167e70ad2720ed55",
-    "src-sha256": "0r29kxhmps18prc8h8486napj722ga66r1v723dz8mxqg2p1vqll"
+    "version": "main",
+    "commit-sha1": "d5b5865a39ecf77669df9265a247826912f0c365",
+    "src-sha256": "06bc9qsmyx654f23h6xglmpxj6b4v0r0h9l4y89zrhyfbida9ziz"
 }
