@@ -32,9 +32,10 @@
             [clojure.set :as clojure.set]))
 
 (defn get-balance
-  [{:keys [address on-success on-error]}]
+  [{:keys [chain-id address on-success on-error]}]
   (json-rpc/call
-   {:method            "eth_getBalance"
+   {:chain-id           chain-id
+    :method            "eth_getBalance"
     :params            [address "latest"]
     :on-success        on-success
     :number-of-retries 50
@@ -42,10 +43,11 @@
 
 (re-frame/reg-fx
  :wallet/get-balances
- (fn [addresses]
+ (fn [[chain-id addresses]]
    (doseq [address addresses]
      (get-balance
-      {:address    address
+      {:chain-id   chain-id
+       :address    address
        :on-success #(re-frame/dispatch [::update-balance-success address %])
        :on-error   #(re-frame/dispatch [::update-balance-fail %])}))))
 
@@ -54,19 +56,21 @@
 
 (re-frame/reg-fx
  :wallet/get-cached-balances
- (fn [{:keys [addresses on-success on-error]}]
+ (fn [{:keys [chain-id addresses on-success on-error]}]
    (json-rpc/call
-    {:method     "wallet_getCachedBalances"
-     :params     [addresses]
+    {:method     "wallet_getCachedBalancesbyChainID"
+     :params     [chain-id addresses]
      :on-success on-success
      :on-error   on-error})))
 
 (fx/defn get-cached-balances
   [{:keys [db]}  scan-all-tokens?]
   (let [addresses (map (comp string/lower-case :address)
-                       (get db :multiaccount/accounts))]
+                       (get db :multiaccount/accounts))
+        chain-id  (ethereum/chain-id db)]
     {:wallet/get-cached-balances
-     {:addresses  addresses
+     {:chain-id   chain-id
+      :addresses  addresses
       :on-success #(re-frame/dispatch [::set-cached-balances addresses % scan-all-tokens?])
       :on-error   #(re-frame/dispatch [::on-get-cached-balance-fail % scan-all-tokens?])}}))
 
@@ -189,10 +193,10 @@
       balances)))
 
 (defn get-token-balances
-  [{:keys [addresses tokens scan-all-tokens? assets]}]
+  [{:keys [chain-id addresses tokens scan-all-tokens? assets]}]
   (json-rpc/call
-   {:method            "wallet_getTokensBalances"
-    :params            [addresses (keys tokens)]
+   {:method            "wallet_getTokensBalancesForChainIDs"
+    :params            [[chain-id] addresses (keys tokens)]
     :number-of-retries 50
     :on-success
     (fn [results]
@@ -302,6 +306,7 @@
   (let [addresses (or addresses (map (comp string/lower-case :address) accounts))
         {:keys [:wallet/visible-tokens]} multiaccount
         chain     (ethereum/chain-keyword db)
+        chain-id  (ethereum/chain-id db)
         assets    (get visible-tokens chain)
         tokens    (->> (vals all-tokens)
                        (remove #(or (:hidden? %)
@@ -315,8 +320,9 @@
                (not= network-status :offline))
       (fx/merge
        cofx
-       {:wallet/get-balances        addresses
-        :wallet/get-tokens-balances {:addresses        addresses
+       {:wallet/get-balances        [chain-id addresses]
+        :wallet/get-tokens-balances {:chain-id         chain-id
+                                     :addresses        addresses
                                      :tokens           tokens
                                      :assets           assets
                                      :scan-all-tokens? scan-all-tokens?}
@@ -459,7 +465,8 @@
                (assoc-in [:signing/edit-fee :gas-price-loading?] false))})
     {:db (-> db
              (assoc-in [:wallet/prepare-transaction :gasPrice] price)
-             (assoc-in [:signing/edit-fee :gas-price-loading?] false))}))
+             (assoc-in [:signing/edit-fee :gas-price-loading?] false)
+             (assoc-in [tx-entry :gasPrice] price))}))
 
 (fx/defn set-max-amount
   {:events [:wallet.send/set-max-amount]}
@@ -676,13 +683,13 @@
 
 (re-frame/reg-fx
  ::check-recent-history
- (fn [addresses]
-   (log/info "[wallet] check recent history" addresses)
+ (fn [[chain-ids addresses]]
+   (log/info "[wallet] check recent history" chain-ids addresses)
    (json-rpc/call
-    {:method            "wallet_checkRecentHistory"
-     :params            [addresses]
-     :on-success        #(log/info "[wallet] wallet_checkRecentHistory success")
-     :on-error          #(log/error "[wallet] wallet_checkRecentHistory error" %)})))
+    {:method            "wallet_checkRecentHistoryForChainIDs"
+     :params            [chain-ids addresses]
+     :on-success        #(log/info "[wallet] wallet_checkRecentHistoryForChainIDs success")
+     :on-error          #(log/error "[wallet] wallet_checkRecentHistoryForChainIDs error" %)})))
 
 (def ms-2-min (datetime/minutes 2))
 (def ms-3-min (datetime/minutes 3))
@@ -761,14 +768,15 @@
         old-timeout (get db :wallet-service/restart-timeout)
         timeout     (if force-restart?
                       old-timeout
-                      (set-timeout db))]
+                      (set-timeout db))
+        chain-ids   [(ethereum/chain-id db)]]
     {:db            (-> db
                         (assoc :wallet-service/restart-timeout timeout
                                :wallet-service/custom-interval (get-next-custom-interval db)
                                :wallet/was-started? true
                                :wallet/on-recent-history-fetching on-recent-history-fetching)
                         (reset-all-fetched? addresses))
-     ::check-recent-history addresses
+     ::check-recent-history [chain-ids addresses]
      ::utils.utils/clear-timeouts
      [(when (not= timeout old-timeout) old-timeout)]}))
 
@@ -821,23 +829,19 @@
 
 (re-frame/reg-fx
  ::start-watching
- (fn [hashes]
+ (fn [[chain-id hashes]]
    (log/info "[wallet] watch transactions" hashes)
    (doseq [hash hashes]
      (json-rpc/call
-      {:method     "wallet_watchTransaction"
-       :params     [hash]
+      {:method     "wallet_watchTransactionByChainID"
+       :params     [chain-id hash]
        :on-success #(re-frame.core/dispatch [::restart true])
        :on-error   #(log/info "[wallet] watch transaction error" % "hash" hash)}))))
 
 (fx/defn watch-tx
   {:events [:watch-tx]}
   [{:keys [db] :as cofx} tx-id]
-  {::start-watching [tx-id]})
-
-(fx/defn watch-transsactions
-  [_ hashes]
-  {::start-watching hashes})
+  {::start-watching [(ethereum/chain-id db) [tx-id]]})
 
 (fx/defn clear-timeouts
   [{:keys [db]}]
@@ -940,10 +944,10 @@
 
 (re-frame/reg-fx
  ::set-inital-range
- (fn []
+ (fn [chain-ids]
    (json-rpc/call
-    {:method            "wallet_setInitialBlocksRange"
-     :params            []
+    {:method            "wallet_setInitialBlocksRangeForChainIDs"
+     :params            [chain-ids]
      :number-of-retries 10
      :on-success        #(log/info "Initial blocks range was successfully set")
      :on-error          #(log/info "Initial blocks range was not set")})))
@@ -951,7 +955,7 @@
 (fx/defn set-initial-blocks-range
   [{:keys [db]}]
   {:db                (assoc db :wallet/new-account true)
-   ::set-inital-range nil})
+   ::set-inital-range [(ethereum/chain-id db)]})
 
 (fx/defn tab-opened
   {:events [:wallet/tab-opened]}
@@ -991,17 +995,17 @@
 
 (re-frame/reg-fx
  ::get-pending-transactions
- (fn []
+ (fn [chain-id]
    (json-rpc/call
-    {:method     "wallet_getPendingTransactions"
-     :params     []
+    {:method     "wallet_getPendingTransactionsByChainID"
+     :params     [chain-id]
      :on-success #(re-frame/dispatch [:wallet/on-retreiving-pending-transactions %])})))
 
 (fx/defn get-pending-transactions
   {:events [:wallet/get-pending-transactions]}
-  [_]
+  [{:keys [db]}]
   (log/info "[wallet] get pending transactions")
-  {::get-pending-transactions nil})
+  {::get-pending-transactions (ethereum/chain-id db)})
 
 (defn normalize-transaction
   [db {:keys [symbol gasPrice gasLimit value from to] :as transaction}]
@@ -1030,20 +1034,40 @@
                  db)))
            db
            (map (partial normalize-transaction db) raw-transactions))
-   ::start-watching (map :hash raw-transactions)})
+   ::start-watching [(ethereum/chain-id db) (map :hash raw-transactions)]})
 
 (re-frame/reg-fx
  :wallet/delete-pending-transactions
- (fn [hashes]
+ (fn [[chain-id hashes]]
    (log/info "[wallet] delete pending transactions")
    (doseq [hash hashes]
      (json-rpc/call
-      {:method     "wallet_deletePendingTransaction"
-       :params     [hash]
-       :on-success #(log/info "[wallet] pending transaction deleted" hash)}))))
+      {:method     "wallet_deletePendingTransactionByChainID"
+       :params     [chain-id hash]
+       :on-success #(log/info "[wallet] pending transaction deleted" chain-id hash)}))))
 
 (fx/defn switch-transactions-management-enabled
   {:events [:multiaccounts.ui/switch-transactions-management-enabled]}
   [{:keys [db]} enabled?]
   {::async-storage/set! {:transactions-management-enabled? enabled?}
    :db (assoc db :wallet/transactions-management-enabled? enabled?)})
+
+(defn reset-wallet-state [db]
+  (let [addresses (keys (get-in db [:wallet :accounts]))]
+    (reduce (fn [db address]
+              (-> db
+                  (assoc-in [:wallet :accounts address :transactions] {})
+                  (assoc-in [:wallet :accounts address :min-block] nil)
+                  (assoc-in [:wallet :accounts address :max-block] 0)
+                  (assoc :wallet/non-archival-node false
+                         :wallet/new-account true)))
+            db
+            addresses)))
+
+(fx/defn handle-reset-wallet-event
+  {:events [::reset-wallet]}
+  [cofx]
+  (let [event-key :status-im.multiaccounts.login.core/initialize-wallet
+        effect-key event-key]
+    (fx/merge cofx {effect-key (fn [accounts custom-tokens favourites]
+                                (re-frame/dispatch [event-key accounts custom-tokens favourites false false]))})))

@@ -206,6 +206,7 @@
            (assoc-in [:signing/tx :gas] gas)
            (assoc-in [:signing/edit-fee :gas-loading?] false))})
 
+;deprecated, use wallet-send-gas-price-success instead
 (fx/defn update-gas-price-success
   {:events [:signing/update-gas-price-success]}
   [{db :db} price]
@@ -295,7 +296,8 @@
                                          (assoc params :fee-history %)])}))
     (fn []
       (json-rpc/call
-       {:method     "eth_gasPrice"
+       {:chainId    network-id
+        :method     "eth_gasPrice"
         :on-success success-callback
         :on-error   (or error-callback #(log/warn "eth_gasPrice error" %))})))))
 

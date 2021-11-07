@@ -9,7 +9,8 @@
             [status-im.utils.fx :as fx]
             [status-im.utils.mobile-sync :as utils.mobile-sync]
             [status-im.wallet.core :as wallet]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            [status-im.ethereum.core :as ethereum]))
 
 (def confirmations-count-threshold 12)
 
@@ -229,7 +230,7 @@
                                                (= type :pending))
                                       hash)))
                                 transactions)]
-    {:wallet/delete-pending-transactions pending-tx-hashes}))
+    {:wallet/delete-pending-transactions [(ethereum/chain-id db) pending-tx-hashes]}))
 
 (fx/defn handle-new-transfer
   [{:keys [db] :as cofx} transfers {:keys [address limit]}]
@@ -305,7 +306,7 @@
 
 (re-frame/reg-fx
  :transactions/get-transfers
- (fn [{:keys [chain-tokens addresses before-block limit
+ (fn [{:keys [chain-id chain-tokens addresses before-block limit
               limit-per-address fetch-more?]
        :as params
        :or {limit       default-transfers-limit
@@ -323,8 +324,8 @@
      (let [limit (or (get limit-per-address address)
                      limit)]
        (json-rpc/call
-        {:method "wallet_getTransfersByAddress"
-         :params [address (encode/uint before-block) (encode/uint limit) fetch-more?]
+        {:method "wallet_getTransfersByAddressAndChainID"
+         :params [chain-id address (encode/uint before-block) (encode/uint limit) fetch-more?]
          :on-success #(re-frame/dispatch
                        [::new-transfers
                         (enrich-transfers chain-tokens %)
@@ -344,7 +345,8 @@
     (fx/merge
      cofx
      {:transactions/get-transfers
-      {:chain-tokens          (:wallet/all-tokens db)
+      {:chain-id              (ethereum/chain-id db)
+       :chain-tokens          (:wallet/all-tokens db)
        :addresses             [address]
        :before-block          min-known-block
        :fetch-more?           (utils.mobile-sync/syncing-allowed? cofx)
@@ -360,6 +362,7 @@
 (fx/defn get-fetched-transfers
   [{:keys [db]}]
   {:transactions/get-transfers
-   {:chain-tokens (:wallet/all-tokens db)
+   {:chain-id     (ethereum/chain-id db)
+    :chain-tokens (:wallet/all-tokens db)
     :addresses    (map :address (get db :multiaccount/accounts))
     :fetch-more?  false}})

@@ -25,7 +25,9 @@
             [status-im.bottom-sheet.core :as bottom-sheet]
             [status-im.browser.webview-ref :as webview-ref]
             ["eth-phishing-detect" :as eth-phishing-detect]
-            [status-im.utils.debounce :as debounce]))
+            [status-im.utils.debounce :as debounce]
+            [status-im.node.core :as node]
+            [status-im.wallet.core :as wallet]))
 
 (fx/defn update-browser-option
   [{:keys [db]} option-key option-value]
@@ -525,11 +527,18 @@
 (fx/defn dapps-network-selected
   {:events [:dapps-network-selected]}
   [{:keys [db] :as cofx} network]
-  (fx/merge cofx
-            {:db (assoc db
-                   :dapps-networks/current-network network
-                   :dapps-networks/network-changed? true)}
-            (bottom-sheet/hide-bottom-sheet)))
+  (let [selected-network (:networkIdName network)]
+       (fx/merge cofx
+                 {:db (-> db
+                          (assoc :dapps-networks/current-network network
+                                 :dapps-networks/network-changed? true
+                                 :networks/current-network selected-network)
+                          (wallet/reset-wallet-state))
+                  ::json-rpc/call [{:method "settings_saveSetting"
+                                    :params [:networks/current-network selected-network]
+                                    :on-success #()}]}
+                 (node/prepare-new-config {:on-success #(re-frame/dispatch [::wallet/reset-wallet])})
+                 (bottom-sheet/hide-bottom-sheet))))
 
 (re-frame/reg-fx
  :browser/call-rpc

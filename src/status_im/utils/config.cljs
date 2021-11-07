@@ -131,10 +131,11 @@
   ([network-id]
    (let [network (first (filter #(= network-id (:id %)) mainnet-networks))]
      {:networkId (get-in network [:config :NetworkId])
-      :name (:name network)})))
+      :name (:name network)
+      :networkIdName (:id network)})))
 
 (def dapps-networks
-  (map #(identity {:name (:name %) :networkId (get-in % [:config :NetworkId])}) mainnet-networks))
+  (map #(identity {:name (:name %) :networkId (get-in % [:config :NetworkId]) :networkIdName (:id %)}) mainnet-networks))
 
 (def sidechain-networks
   [{:id     "xdai_rpc",

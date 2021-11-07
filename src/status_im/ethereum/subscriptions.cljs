@@ -4,7 +4,8 @@
             [status-im.wallet.core :as wallet.core]
             [status-im.ethereum.transactions.core :as transactions]
             [status-im.utils.fx :as fx]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            [status-im.ethereum.core :as ethereum]))
 
 (fx/defn handle-signal
   [cofx {:keys [subscription_id data] :as event}]
@@ -55,7 +56,8 @@
                    :wallet/fetching-error
                    :wallet/recent-history-fetching-started?))
    :transactions/get-transfers
-   {:chain-tokens (:wallet/all-tokens db)
+   {:chain-id     (ethereum/chain-id db)
+    :chain-tokens (:wallet/all-tokens db)
     :addresses    (reduce
                    (fn [v address]
                      (let [normalized-address

@@ -139,6 +139,7 @@
             :gas-price gas-price
             :fee-cap   maxFeePerGas
             :tip-cap   maxPriorityFeePerGas
+            :network_id (ethereum/chain-id db)
             :gas-limit gas-limit}]
     (log/info "[signing] prepare-unconfirmed-transaction" tx)
     {:db (-> db

@@ -172,14 +172,22 @@
    "localnotifications_switchWalletNotifications" {}
    "localnotifications_notificationPreferences" {}
    "wallet_setInitialBlocksRange" {}
+   "wallet_setInitialBlocksRangeForChainIDs" {}
    "wallet_getTransfersByAddress" {}
+   "wallet_getTransfersByAddressAndChainID" {}
    "wallet_watchTransaction" {}
+   "wallet_watchTransactionByChainID" {}
    "wallet_checkRecentHistory" {}
+   "wallet_checkRecentHistoryForChainIDs" {}
    "wallet_getCachedBalances" {}
+   "wallet_getCachedBalancesbyChainID" {}
    "wallet_storePendingTransaction" {}
    "wallet_deletePendingTransaction" {}
+   "wallet_deletePendingTransactionByChainID" {}
    "wallet_getPendingTransactions" {}
+   "wallet_getPendingTransactionsByChainID" {}
    "wallet_getTokensBalances" {}
+   "wallet_getTokensBalancesForChainIDs" {}
    "wallet_getCustomTokens" {}
    "wallet_addCustomToken" {}
    "wallet_addFavourite" {}
@@ -243,7 +251,7 @@
   (str "wakuext_" method))
 
 (defn call
-  [{:keys [method params on-success on-error js-response] :as arg}]
+  [{:keys [chain-id method params on-success on-error js-response] :as arg}]
   (if-let [method-options (json-rpc-api method)]
     (let [params (or params [])
           {:keys [id on-result subscription?]
@@ -260,6 +268,7 @@
         (status/call-private-rpc
          (types/clj->json {:jsonrpc "2.0"
                            :id      id
+                           :chainId chain-id
                            :method  (if subscription?
                                       "eth_subscribeSignal"
                                       method)
