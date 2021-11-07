@@ -215,12 +215,7 @@
        (when (not= network-id fetched-network-id)
          ;;TODO: this shouldn't happen but in case it does
          ;;we probably want a better error message
-         (utils/show-popup
-          (i18n/label :t/ethereum-node-started-incorrectly-title)
-          (i18n/label :t/ethereum-node-started-incorrectly-description
-                      {:network-id         network-id
-                       :fetched-network-id fetched-network-id})
-          #(re-frame/dispatch [::close-app-confirmed]))))}]})
+         (log/warn "network-id not equal fetched-network-id" network-id fetched-network-id)))}]})
 
 (re-frame/reg-fx
  ;;TODO: this could be replaced by a single API call on status-go side
