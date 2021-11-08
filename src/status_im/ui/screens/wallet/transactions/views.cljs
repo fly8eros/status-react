@@ -33,7 +33,12 @@
                               colors/red)
     :pending (transaction-icon :main-icons/arrow-right
                                colors/black-transparent colors/gray)
-    (throw (str "Unknown transaction type: " k))))
+    (transaction-icon :main-icons/warning
+                      colors/black-transparent
+                      colors/red)
+    ;todo after switch chain, user back to transaction detail, we get k nil, because we have cleared :transactions
+    ;(throw (str "Unknown transaction type: " k))
+    ))
 
 (defn render-transaction
   [{:keys [label contact address contact-accessibility-label

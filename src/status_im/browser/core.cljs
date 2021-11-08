@@ -527,7 +527,8 @@
 (fx/defn dapps-network-selected
   {:events [:dapps-network-selected]}
   [{:keys [db] :as cofx} network]
-  (let [selected-network (:networkIdName network)]
+  (let [selected-network (:networkIdName network)
+        network-id (:networkId network)]
        (fx/merge cofx
                  {:db (-> db
                           (assoc :dapps-networks/current-network network
@@ -536,7 +537,8 @@
                           (wallet/reset-wallet-state))
                   ::json-rpc/call [{:method "settings_saveSetting"
                                     :params [:networks/current-network selected-network]
-                                    :on-success #()}]}
+                                    :on-success #()}]
+                  :wallet/switch-chain (str network-id)}
                  (node/prepare-new-config {:on-success #(re-frame/dispatch [::wallet/reset-wallet])})
                  (bottom-sheet/hide-bottom-sheet))))
 

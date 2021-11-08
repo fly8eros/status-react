@@ -636,6 +636,17 @@ RCT_EXPORT_METHOD(sendTransaction:(NSString *)txArgsJSON
 }
 
 ////////////////////////////////////////////////////////////////////
+#pragma mark - SwitchChain
+//////////////////////////////////////////////////////////////////// switchChain
+RCT_EXPORT_METHOD(switchChain:(NSString *)chainId) {
+#if DEBUG
+    NSLog(@"SwitchChain() method called");
+#endif
+    NSString *result = StatusgoSwitchChain(chainId);
+    NSLog(@"%@", result);
+}
+
+////////////////////////////////////////////////////////////////////
 #pragma mark - SignMessage
 //////////////////////////////////////////////////////////////////// signMessage
 RCT_EXPORT_METHOD(signMessage:(NSString *)message

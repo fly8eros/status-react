@@ -29,7 +29,8 @@
             [status-im.popover.core :as popover.core]
             [status-im.signing.eip1559 :as eip1559]
             [status-im.signing.gas :as signing.gas]
-            [clojure.set :as clojure.set]))
+            [clojure.set :as clojure.set]
+            [status-im.native-module.core :as status]))
 
 (defn get-balance
   [{:keys [chain-id address on-success on-error]}]
@@ -1071,3 +1072,8 @@
         effect-key event-key]
     (fx/merge cofx {effect-key (fn [accounts custom-tokens favourites]
                                 (re-frame/dispatch [event-key accounts custom-tokens favourites false false]))})))
+
+(re-frame/reg-fx
+  :wallet/switch-chain
+  (fn [chain-id]
+    (status/switch-chain chain-id)))

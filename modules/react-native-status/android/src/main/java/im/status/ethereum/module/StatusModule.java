@@ -1529,5 +1529,27 @@ class StatusModule extends ReactContextBaseJavaModule implements LifecycleEventL
 
         StatusThreadPoolExecutor.getInstance().execute(r);
     }
+
+    @ReactMethod
+    public void switchChain(final String chainId) {
+        Log.d(TAG, "switchChain");
+        if (!checkAvailability()) {
+            return;
+        }
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                String result = Statusgo.switchChain(chainId);
+                if (result.startsWith("{\"error\":\"\"")) {
+                    Log.d(TAG, "switchChain result: " + result);
+                } else {
+                    Log.e(TAG, "switchChain failed: " + result);
+                }
+            }
+        };
+
+        StatusThreadPoolExecutor.getInstance().execute(r);
+    }
 }
 

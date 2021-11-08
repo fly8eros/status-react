@@ -436,3 +436,8 @@
                             current-password#
                             new-password
                             callback))
+
+(defn switch-chain
+  [chain-id]
+  (log/debug "[native-module] switch-chain" chain-id)
+  (.switchChain ^js (status) chain-id))
