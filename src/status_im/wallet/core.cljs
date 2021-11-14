@@ -811,7 +811,7 @@
    cofx
    {:force-restart? force-restart?}))
 
-(def pull-to-refresh-cooldown-period (* 1 60 1000))
+(def pull-to-refresh-cooldown-period (* 1 20 1000))
 
 (fx/defn restart-on-pull
   {:events [:wallet.ui/pull-to-refresh-history]}
