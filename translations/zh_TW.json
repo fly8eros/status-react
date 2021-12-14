@@ -23,6 +23,8 @@
     "account-name": "帳號名稱",
     "account-settings": "帳號設定",
     "account-title": "帳號",
+    "account-private-key": "帳戶私鑰",
+    "export-private-key-password-placeholder": "請輸入帳戶密碼...",
     "accounts": "帳號",
     "actions": "操作",
     "active-online": "線上",

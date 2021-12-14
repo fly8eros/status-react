@@ -118,7 +118,7 @@
                                 [:wallet.accounts/start-adding-new-account
                                  {:type :key}])}])]))
 
-(defn account-settings []
+(defn account-settings [account]
   [react/view
    [quo/list-item
     {:theme               :accent
@@ -126,4 +126,12 @@
      :accessibility-label :account-settings-bottom-sheet
      :icon                :main-icons/info
      :on-press            #(hide-sheet-and-dispatch
-                            [:navigate-to :account-settings])}]])
+                            [:navigate-to :account-settings])}]
+   (when-not (= :watch (:type account))
+     [quo/list-item
+      {:theme               :accent
+       :title               (i18n/label :t/export-key)
+       :accessibility-label :account-private-key
+       :icon                :main-icons/objects
+       :on-press            #(hide-sheet-and-dispatch
+                               [:navigate-to :account-private-key])}])])

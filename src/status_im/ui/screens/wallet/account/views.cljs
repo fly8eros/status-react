@@ -189,7 +189,7 @@
          :right-accessories
          [{:icon     :main-icons/more
            :on-press #(re-frame/dispatch [:bottom-sheet/show-sheet
-                                          {:content        sheets/account-settings
+                                          {:content        (partial sheets/account-settings account)
                                            :content-height 60}])}]}]
        [react/animated-scroll-view
         {:contentContainerStyle {:padding-bottom button-group-height}

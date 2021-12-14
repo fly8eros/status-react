@@ -7,6 +7,7 @@
             [status-im.utils.platform :as platform]
             [status-im.ui.screens.wallet.signing-phrase.views :as signing-phrase]
             [status-im.ui.screens.communities.views :as communities]
+            [status-im.ui.screens.wallet.account-private-key.views :as account-private-key]
             [status-im.ui.screens.wallet.request.views :as request]
             [status-im.ui.screens.profile.user.views :as profile.user]
             ["react-native" :refer (BackHandler)]
@@ -159,6 +160,9 @@
 
                    (= :export-community view)
                    [communities/export-community]
+
+                   (= :display-private-key)
+                   [account-private-key/display-private-key]
 
                    (= :dapp-invite view)
                    [dapp.invite/accept-popover]

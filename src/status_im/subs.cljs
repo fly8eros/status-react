@@ -182,6 +182,7 @@
 (reg-root-key-sub :wallet/fetching-collection-assets :wallet/fetching-collection-assets)
 (reg-root-key-sub :wallet/collectible-assets :wallet/collectible-assets)
 (reg-root-key-sub :wallet/selected-collectible :wallet/selected-collectible)
+(reg-root-key-sub :wallet/export-private-key-error :wallet/export-private-key-error)
 
 ;;commands
 (reg-root-key-sub :commands/select-account :commands/select-account)

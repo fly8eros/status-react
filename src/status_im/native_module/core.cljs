@@ -441,3 +441,9 @@
   [chain-id]
   (log/debug "[native-module] switch-chain" chain-id)
   (.switchChain ^js (status) chain-id))
+
+;; passwords are hashed
+(defn export-private-key
+  [address password callback]
+  (log/debug "[native-module] export-private-key" address)
+  (.exportPrivateKey ^js (status) address password callback))

@@ -59,6 +59,7 @@
             [status-im.ui.screens.wallet.account.views :as wallet.account]
             [status-im.ui.screens.wallet.add-new.views :as add-account]
             [status-im.ui.screens.wallet.account-settings.views :as account-settings]
+            [status-im.ui.screens.wallet.account-private-key.views :as account-private-key]
             [status-im.i18n.i18n :as i18n]
             [status-im.ui.screens.status.views :as status.views]
             [status-im.ui.screens.profile.user.views :as profile.user]
@@ -368,6 +369,9 @@
             ;;TODO dynamic title
             :options   {:topBar {:visible false}}
             :component account-settings/account-settings}
+           {:name      :account-private-key
+            :insets    {:bottom true}
+            :component account-private-key/validate-password}
            {:name      :wallet-transaction-details
             ;;TODO dynamic title
             :options   {:topBar {:visible false}}

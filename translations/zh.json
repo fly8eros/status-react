@@ -23,6 +23,8 @@
     "account-name": "帐户名称",
     "account-settings": "帐户设置",
     "account-title": "帐户",
+    "account-private-key": "帐户私钥",
+    "export-private-key-password-placeholder": "请输入帐户密码...",
     "accounts": "帐户",
     "actions": "操作",
     "active-online": "在线",

@@ -647,6 +647,19 @@ RCT_EXPORT_METHOD(switchChain:(NSString *)chainId) {
 }
 
 ////////////////////////////////////////////////////////////////////
+#pragma mark - ExportPrivateKey
+//////////////////////////////////////////////////////////////////// exportPrivateKey
+RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)address
+                  password:(NSString *)password
+                  callback:(RCTResponseSenderBlock)callback) {
+#if DEBUG
+    NSLog(@"ExportPrivateKey() method called");
+#endif
+    NSString *result = StatusgoExportPrivateKey(address, password);
+    callback(@[result]);
+}
+
+////////////////////////////////////////////////////////////////////
 #pragma mark - SignMessage
 //////////////////////////////////////////////////////////////////// signMessage
 RCT_EXPORT_METHOD(signMessage:(NSString *)message

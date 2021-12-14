@@ -1551,5 +1551,29 @@ class StatusModule extends ReactContextBaseJavaModule implements LifecycleEventL
 
         StatusThreadPoolExecutor.getInstance().execute(r);
     }
+
+    @ReactMethod
+    public void exportPrivateKey(final String address, final String password, final Callback callback) {
+        Log.d(TAG, "exportPrivateKey");
+        if (!checkAvailability()) {
+            callback.invoke(false);
+            return;
+        }
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                String result = Statusgo.exportPrivateKey(address, password);
+                if (result.startsWith("{\"error\"")) {
+                    Log.e(TAG, "exportPrivateKey failed: " + result);
+                } else {
+                    Log.d(TAG, "exportPrivateKey result: " + result);
+                }
+                callback.invoke(result);
+            }
+        };
+
+        StatusThreadPoolExecutor.getInstance().execute(r);
+
+    }
 }
 
