@@ -76,10 +76,10 @@
 	<string>Location access is required for some DApps to function properly.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location access is required for some DApps to function properly.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Photos access is required to give you the ability to save images.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need microphone access for sending audio messages.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photos access is required to give you the ability to save images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos access is required to give you the ability to send images.</string>
 	<key>UIAppFonts</key>

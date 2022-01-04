@@ -815,7 +815,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				CUSTOM_PRODUCT_NAME = "Eros Debug";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = KBCKMD8485;
@@ -857,13 +857,13 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lc++",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuesiatech.xbnote;
+				PRODUCT_BUNDLE_IDENTIFIER = fund.eros.eros;
 				PRODUCT_NAME = StatusIm;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -887,7 +887,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				CUSTOM_PRODUCT_NAME = Eros;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = KBCKMD8485;
@@ -921,20 +921,20 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lc++",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuesiatech.xbnote;
+				PRODUCT_BUNDLE_IDENTIFIER = fund.eros.eros;
 				PRODUCT_NAME = StatusIm;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "StatusIm-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "arm64";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
@@ -999,7 +999,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "arm64";
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -1057,7 +1057,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "StatusIm-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "arm64";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
@@ -1139,8 +1139,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "arm64";
-				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64";
+				VALID_ARCHS = arm64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
 			};
 			name = Debug;
 		};
@@ -1213,7 +1213,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
