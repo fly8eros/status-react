@@ -19,8 +19,10 @@
 
 (re-frame/reg-fx
  :http-post
- (fn [{:keys [url data response-validator on-success on-error timeout-ms opts]}]
-   (let [all-opts (assoc opts
-                         :valid-response? response-validator
-                         :timeout-ms timeout-ms)]
-     (http/post url data on-success on-error all-opts))))
+ (fn [params]
+   (doseq [{:keys [url data response-validator on-success on-error timeout-ms opts]} params]
+     (let [all-opts (assoc opts
+                      :valid-response? response-validator
+                      :timeout-ms timeout-ms)]
+       (http/post url data on-success on-error all-opts)))))
+

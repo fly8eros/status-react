@@ -59,7 +59,7 @@
                  :version  2}]
     {:db        (assoc-in db [:acquisition :network-status]
                           (get network-statuses :in-flight))
-     :http-post {:url        url
+     :http-post [{:url        url
                  :opts       {:headers {"Content-Type" "application/json"}
                               :method  method}
                  :data       (types/clj->json payload)
@@ -68,7 +68,7 @@
                                                   (get network-statuses :success))
                                (re-frame/dispatch (conj on-success (types/json->clj (get response :response-body)))))
                  :on-error   (fn [error]
-                               (re-frame/dispatch [::on-error (:error (types/json->clj (get error :response-body)))]))}}))
+                               (re-frame/dispatch [::on-error (:error (types/json->clj (get error :response-body)))]))}]}))
 
 (fx/defn get-referrer
   [{:keys [db]} referrer on-success handled-error handle-error]

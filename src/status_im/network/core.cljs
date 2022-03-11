@@ -90,7 +90,7 @@
   [{:keys [db] :as cofx} network-id]
   (if-let [config (get-in db [:networks/networks network-id :config])]
     (if-let [upstream-url (get-in config [:UpstreamConfig :URL])]
-      {:http-post {:url        upstream-url
+      {:http-post [{:url        upstream-url
                    :data       (types/clj->json [{:jsonrpc "2.0"
                                                   :method  "web3_clientVersion"
                                                   :id      1}
@@ -114,7 +114,7 @@
                                  (let [reason (if status-code
                                                 (i18n/label :t/network-invalid-status-code {:code status-code})
                                                 (str response-body))]
-                                   (re-frame/dispatch [::connect-failure reason])))}}
+                                   (re-frame/dispatch [::connect-failure reason])))}]}
       (connect-success cofx network-id))
     (connect-failure cofx "A network with the specified id doesn't exist")))
 
