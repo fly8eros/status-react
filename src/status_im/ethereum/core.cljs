@@ -19,6 +19,8 @@
     (catch :default _ nil)))
 
 ;; IDs standardized in https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md#list-of-chain-ids
+(defn mainnet? [chain-id]
+  (= 1110 chain-id))
 
 (def chains
   {:mainnet  {:id 1110 :name "Mainnet"}

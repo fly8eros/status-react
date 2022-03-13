@@ -30,27 +30,57 @@
             [status-im.signing.eip1559 :as eip1559]
             [status-im.signing.gas :as signing.gas]
             [clojure.set :as clojure.set]
+            [status-im.utils.http :as http]
+            [status-im.utils.types :as types]
             [status-im.native-module.core :as status]))
 
 (defn get-balance
   [{:keys [chain-id address on-success on-error]}]
   (json-rpc/call
-   {:chain-id           chain-id
-    :method            "eth_getBalance"
-    :params            [address "latest"]
-    :on-success        on-success
-    :number-of-retries 50
-    :on-error          on-error}))
+    {:chain-id           chain-id
+     :method            "eth_getBalance"
+     :params            [address "latest"]
+     :on-success        on-success
+     :number-of-retries 50
+     :on-error          on-error}))
+
+(defn- prepare-get-balances-post-data [addresses]
+  (let [data (reduce-kv (fn [acc idx address] (conj acc {
+                                                         :id idx
+                                                         :jsonrpc "2.0"
+                                                         :method "eth_getBalance"
+                                                         :params [address "latest"]
+                                                         }))
+                        []
+                        addresses)]
+    (types/clj->json data)))
 
 (re-frame/reg-fx
  :wallet/get-balances
  (fn [[chain-id addresses]]
-   (doseq [address addresses]
-     (get-balance
-      {:chain-id   chain-id
-       :address    address
-       :on-success #(re-frame/dispatch [::update-balance-success address %])
-       :on-error   #(re-frame/dispatch [::update-balance-fail %])}))))
+   (if (ethereum/mainnet? chain-id)
+     (let [addresses (into [] addresses)
+           data (prepare-get-balances-post-data addresses)]
+       (http/post config/mainnet-rpc-url
+                  data
+                  (fn [{:keys [response-body]}]
+                    (let [responses (http/parse-payload response-body)]
+                      (dotimes [n (count responses)]
+                        (let [address (nth addresses n)
+                              result (:result (nth responses n))
+                              balance (money/bignumber result)]
+                          (log/debug "get-balance" address balance)
+                          (re-frame/dispatch [::update-balance-success address balance]))
+                        )))
+                  #(re-frame/dispatch [::update-balance-fail %])
+                  {:headers {"Content-Type" "application/json"} :timeout-ms 30000}))
+     (doseq [address addresses]
+       (get-balance
+         {:chain-id   chain-id
+          :address    address
+          :on-success #(re-frame/dispatch [::update-balance-success address %])
+          :on-error   #(re-frame/dispatch [::update-balance-fail %])})))
+   ))
 
 (defn assoc-error-message [db error-type err]
   (assoc-in db [:wallet :errors error-type] (or err :unknown-error)))
@@ -78,13 +108,13 @@
 (fx/defn on-update-balance-fail
   {:events [::update-balance-fail]}
   [{:keys [db]} err]
-  (log/debug "Unable to get balance: " err)
+  (log/warn "Unable to get balance: " err)
   {:db (assoc-error-message db :balance-update :error-unable-to-get-balance)})
 
 (fx/defn on-update-token-balance-fail
   {:events [::update-token-balance-fail]}
   [{:keys [db]} err]
-  (log/debug "on-update-token-balance-fail: " err)
+  (log/warn "on-update-token-balance-fail: " err)
   {:db (assoc-error-message db :balance-update :error-unable-to-get-token-balance)})
 
 (fx/defn open-transaction-details
@@ -193,24 +223,75 @@
     (when (not-empty balances)
       balances)))
 
+(defn- prepare-get-token-balances-post-data [addresses tokens]
+  (let [token-num (count tokens)
+        data (reduce-kv (fn [acc idx address]
+                          (let [acc2 (reduce-kv (fn [acc idx2 token]
+                                                  (let [id (+ (* idx token-num) idx2)
+                                                        address (string/replace address "0x" "")]
+                                                    (conj acc {:id id
+                                                               :jsonrpc "2.0"
+                                                               :method "eth_call"
+                                                               :params [{:to token
+                                                                         :data (str "0x70a08231000000000000000000000000" address)}
+                                                                        "latest"]})))
+                                                []
+                                                tokens)]
+                            (apply conj acc acc2)))
+                        []
+                        addresses)]
+    (types/clj->json data)))
+
 (defn get-token-balances
   [{:keys [chain-id addresses tokens scan-all-tokens? assets]}]
-  (json-rpc/call
-   {:method            "wallet_getTokensBalancesForChainIDs"
-    :params            [[chain-id] addresses (keys tokens)]
-    :number-of-retries 50
-    :on-success
-    (fn [results]
-      (when-let [balances (clean-up-results
-                           results tokens
-                           (if scan-all-tokens? nil assets))]
-        (re-frame/dispatch (if scan-all-tokens?
-                             ;; NOTE: when there it is not a visible
-                             ;; assets we make an initialization round
-                             [::tokens-found balances]
-                             [::update-tokens-balances-success balances]))))
-    :on-error
-    #(re-frame/dispatch [::update-token-balance-fail %])}))
+  (if (ethereum/mainnet? chain-id)
+    (let [addresses (into [] addresses)
+          token-addresses (into [] (keys tokens))
+          data (prepare-get-token-balances-post-data addresses token-addresses)
+          token-num (count tokens)]
+      (http/post config/mainnet-rpc-url
+                 data
+                 (fn [{:keys [response-body]}]
+                   (let [responses (http/parse-payload response-body)
+                         balances (reduce-kv (fn [acc idx address]
+                                               (let [token-balances (reduce-kv (fn [acc idx2 token-address]
+                                                                                 (let [idx (+ (* idx token-num) idx2)
+                                                                                       result (:result (nth responses idx))
+                                                                                       token-symbol (get tokens token-address)]
+                                                                                   (if (#{"0x" "0x0000000000000000000000000000000000000000000000000000000000000000"} result)
+                                                                                     acc
+                                                                                     (assoc acc token-symbol result))))
+                                                                               {}
+                                                                               token-addresses)]
+                                                 (if (empty? token-balances)
+                                                   acc
+                                                   (conj acc {(eip55/address->checksum address) token-balances}))))
+                                             {}
+                                             addresses)]
+                     (re-frame/dispatch (if scan-all-tokens?
+                                          ;; NOTE: when there it is not a visible
+                                          ;; assets we make an initialization round
+                                          [::tokens-found balances]
+                                          [::update-tokens-balances-success balances]))))
+                 #(re-frame/dispatch [::update-token-balance-fail %])
+                 {:headers {"Content-Type" "application/json"} :timeout-ms 30000}))
+    (json-rpc/call
+      {:method            "wallet_getTokensBalancesForChainIDs"
+       :params            [[chain-id] addresses (keys tokens)]
+       :number-of-retries 50
+       :on-success
+                          (fn [results]
+                            (when-let [balances (clean-up-results
+                                                  results tokens
+                                                  (if scan-all-tokens? nil assets))]
+                              (re-frame/dispatch (if scan-all-tokens?
+                                                   ;; NOTE: when there it is not a visible
+                                                   ;; assets we make an initialization round
+                                                   [::tokens-found balances]
+                                                   [::update-tokens-balances-success balances]))))
+       :on-error
+                          #(re-frame/dispatch [::update-token-balance-fail %])}))
+  )
 
 (re-frame/reg-fx
  :wallet/get-tokens-balances
