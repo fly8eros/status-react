@@ -258,7 +258,7 @@
                                                                                  (let [idx (+ (* idx token-num) idx2)
                                                                                        result (:result (nth responses idx))
                                                                                        token-symbol (get tokens token-address)]
-                                                                                   (if (#{"0x" "0x0000000000000000000000000000000000000000000000000000000000000000"} result)
+                                                                                   (if (= "0x" result)
                                                                                      acc
                                                                                      (assoc acc token-symbol result))))
                                                                                {}
