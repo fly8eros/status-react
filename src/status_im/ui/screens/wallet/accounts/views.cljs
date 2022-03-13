@@ -206,16 +206,17 @@
        (schedule-counter-reset)))
    1000))
 
-(defn refresh-action []
+(defn refresh-action [addresses]
   (schedule-counter-reset)
   ;(re-frame/dispatch [:wallet.ui/pull-to-refresh-history])
+  (re-frame/dispatch [:wallet/update-balances addresses false])
   )
 
-(defn refresh-control [refreshing?]
+(defn refresh-control [addresses refreshing?]
   (reagent/as-element
    [rn/refresh-control
     {:refreshing (boolean refreshing?)
-     :onRefresh  refresh-action}]))
+     :onRefresh  (partial refresh-action addresses)}]))
 
 (defn accounts-overview []
   (let [mnemonic @(re-frame/subscribe [:mnemonic])]
@@ -223,7 +224,7 @@
      {:style {:flex 1}}
      [quo/animated-header
       {:extended-header    total-value
-       :refresh-control    refresh-control
+       :refresh-control    (partial refresh-control nil)
        :refreshing-sub     (re-frame/subscribe [:wallet/refreshing-history?])
        :refreshing-counter updates-counter
        :use-insets         true

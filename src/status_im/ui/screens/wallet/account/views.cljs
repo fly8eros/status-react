@@ -197,7 +197,7 @@
                                  [{:nativeEvent {:contentOffset {:y scroll-y}}}]
                                  {:useNativeDriver true})
          :scrollEventThrottle   1
-         :refreshControl        (accounts/refresh-control
+         :refreshControl        ((partial accounts/refresh-control [address])
                                  (and
                                   @accounts/updates-counter
                                   @(re-frame/subscribe [:wallet/refreshing-history?])))}
