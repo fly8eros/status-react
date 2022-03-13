@@ -208,7 +208,8 @@
 
 (defn refresh-action []
   (schedule-counter-reset)
-  (re-frame/dispatch [:wallet.ui/pull-to-refresh-history]))
+  ;(re-frame/dispatch [:wallet.ui/pull-to-refresh-history])
+  )
 
 (defn refresh-control [refreshing?]
   (reagent/as-element
