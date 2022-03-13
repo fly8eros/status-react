@@ -49,23 +49,24 @@
   [{{:keys [network-status :wallet/all-tokens]
      {:keys [currency :wallet/visible-tokens]
       :or   {currency :usd}} :multiaccount :as db} :db}]
-  (let [chain    (ethereum/chain-keyword db)
-        mainnet? (= :mainnet chain)
-        assets   (get visible-tokens chain #{})
-        tokens   (tokens-symbols assets all-tokens)
-        currency (get currency/currencies currency)]
-    (when (not= network-status :offline)
-      {:wallet/get-prices
-       {:from          (if mainnet?
-                         (conj tokens "ETH")
-                         [(-> (tokens/native-currency chain)
-                              (wallet.utils/exchange-symbol))])
-        :to            [(:code currency)]
-        :mainnet?      mainnet?
-        :success-event ::update-prices-success
-        :error-event   ::update-prices-fail}
-
-       :db
-       (-> db
-           (clear-error-message :prices-update)
-           (assoc :prices-loading? true))})))
+  ;(let [chain    (ethereum/chain-keyword db)
+  ;      mainnet? (= :mainnet chain)
+  ;      assets   (get visible-tokens chain #{})
+  ;      tokens   (tokens-symbols assets all-tokens)
+  ;      currency (get currency/currencies currency)]
+  ;  (when (not= network-status :offline)
+  ;    {:wallet/get-prices
+  ;     {:from          (if mainnet?
+  ;                       (conj tokens "ETH")
+  ;                       [(-> (tokens/native-currency chain)
+  ;                            (wallet.utils/exchange-symbol))])
+  ;      :to            [(:code currency)]
+  ;      :mainnet?      mainnet?
+  ;      :success-event ::update-prices-success
+  ;      :error-event   ::update-prices-fail}
+  ;
+  ;     :db
+  ;     (-> db
+  ;         (clear-error-message :prices-update)
+  ;         (assoc :prices-loading? true))}))
+  )
